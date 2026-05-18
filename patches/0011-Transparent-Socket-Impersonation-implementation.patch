@@ -1,7 +1,7 @@
-From 2afce693dedb3bc54648665488d346bbc17ab73a Mon Sep 17 00:00:00 2001
+From acc54e7a37c7bdf21f7d6da1cd1462c134484f37 Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Thu, 19 May 2022 22:38:26 +0200
-Subject: [PATCH 09/32] Transparent Socket Impersonation implementation
+Subject: [PATCH 11/34] Transparent Socket Impersonation implementation
 
 Transparent Socket Impersonation (AF_TSI) is an address family that
 provides sockets presenting two simultaneous personalities, one of
@@ -31,11 +31,11 @@ Signed-off-by: Matej Hrica <mhrica@redhat.com>
  net/socket.c                        |    3 +
  net/tsi/Kconfig                     |    7 +
  net/tsi/Makefile                    |    4 +
- net/tsi/af_tsi.c                    | 1571 +++++++++++++++++++++++++++
+ net/tsi/af_tsi.c                    | 1577 +++++++++++++++++++++++++++
  net/tsi/af_tsi.h                    |  107 ++
  security/selinux/hooks.c            |    8 +-
  security/selinux/include/classmap.h |    3 +-
- 10 files changed, 1710 insertions(+), 3 deletions(-)
+ 10 files changed, 1716 insertions(+), 3 deletions(-)
  create mode 100644 net/tsi/Kconfig
  create mode 100644 net/tsi/Makefile
  create mode 100644 net/tsi/af_tsi.c
@@ -128,10 +128,10 @@ index 000000000000..8b3cf74116a5
 +tsi-y := af_tsi.o
 diff --git a/net/tsi/af_tsi.c b/net/tsi/af_tsi.c
 new file mode 100644
-index 000000000000..e266f968405b
+index 000000000000..3d2bcd8d2ba4
 --- /dev/null
 +++ b/net/tsi/af_tsi.c
-@@ -0,0 +1,1571 @@
+@@ -0,0 +1,1577 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
 + * Transparent Socket Impersonation Driver
@@ -908,11 +908,13 @@ index 000000000000..e266f968405b
 +	struct sock *sk = sock->sk;
 +	struct tsi_sock *tsk;
 +	struct socket *isocket;
++	struct socket *vsocket;
 +	int err;
 +
 +	lock_sock(sk);
 +	tsk = tsi_sk(sock->sk);
 +	isocket = tsk->isocket;
++	vsocket = tsk->vsocket;
 +
 +	switch (tsk->status) {
 +	case S_HYBRID:
@@ -924,7 +926,11 @@ index 000000000000..e266f968405b
 +		}
 +		break;
 +	case S_VSOCK:
-+		err = -EOPNOTSUPP;
++		if (vsocket) {
++			err = vsocket->ops->ioctl(vsocket, cmd, arg);
++		} else {
++			err = -EOPNOTSUPP;
++		}
 +		break;
 +	}
 +

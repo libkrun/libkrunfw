@@ -1,7 +1,7 @@
 From 2883434bdf71f2441c1d34788fb138c010533254 Mon Sep 17 00:00:00 2001
 From: Bobby Eshleman <bobby.eshleman () bytedance ! com>
 Date: Sat, 10 Jun 2023 00:58:33 +0000
-Subject: [PATCH 08/32] virtio/vsock: support dgrams
+Subject: [PATCH 08/34] virtio/vsock: support dgrams
 
 This commit adds support for datagrams over virtio/vsock.
 

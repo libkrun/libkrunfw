@@ -1,7 +1,7 @@
-From 7915f0f9e54178cdff02144a32e08d686372922d Mon Sep 17 00:00:00 2001
+From 98691aa8c63a330e261d8c4690bbfe5fcc462f43 Mon Sep 17 00:00:00 2001
 From: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
 Date: Fri, 8 May 2026 14:23:37 +0200
-Subject: [PATCH 27/32] can: virtio: Add virtio CAN driver
+Subject: [PATCH 29/34] can: virtio: Add virtio CAN driver
 
 Add virtio CAN driver based on Virtio 1.4 specification (see
 https://github.com/oasis-tcs/virtio-spec/tree/virtio-1.4). The driver

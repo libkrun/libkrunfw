@@ -1,7 +1,7 @@
-From 8128cde157db4b71f26e1176ec5239dc836b5a9f Mon Sep 17 00:00:00 2001
+From be0f0f9bd3a497111f28d833364ac7d95ac72703 Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Tue, 10 Mar 2026 13:33:02 +0100
-Subject: [PATCH 23/32] Revert "vsock/virtio: Fix message iterator handling on
+Subject: [PATCH 25/34] Revert "vsock/virtio: Fix message iterator handling on
  transmit path"
 
 This reverts commit e6cee5d4a122ca9d6b7bb8fa09e498c60b9f208c.
@@ -10,7 +10,7 @@ This reverts commit e6cee5d4a122ca9d6b7bb8fa09e498c60b9f208c.
  1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index b3ee9ce90b5d..f274cde784f7 100644
+index 2cae5e2295b1..44da05eb62c7 100644
 --- a/net/vmw_vsock/virtio_transport_common.c
 +++ b/net/vmw_vsock/virtio_transport_common.c
 @@ -106,15 +106,13 @@ static int virtio_transport_fill_skb(struct sk_buff *skb,
