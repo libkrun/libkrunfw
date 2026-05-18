@@ -1,7 +1,7 @@
-From 2afb9a58200ff74af3ad3df97609016d7a0993de Mon Sep 17 00:00:00 2001
+From 86616410154ce8baf16131ffc626174c32c79763 Mon Sep 17 00:00:00 2001
 From: Peter Hilber <quic_philber@quicinc.com>
 Date: Fri, 9 May 2025 18:07:25 +0200
-Subject: [PATCH 31/32] virtio_rtc: Add RTC class driver
+Subject: [PATCH 33/34] virtio_rtc: Add RTC class driver
 
 Expose the virtio-rtc UTC-like clock as an RTC clock to userspace - if it
 is present, and if it does not step on leap seconds. The RTC class enables

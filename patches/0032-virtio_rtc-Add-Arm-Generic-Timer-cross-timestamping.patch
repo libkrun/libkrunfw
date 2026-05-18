@@ -1,7 +1,7 @@
-From 6efb22c8522df0587669065dc5ecc0aea9e19468 Mon Sep 17 00:00:00 2001
+From 22d1aeb70c898338e96f5db3573f4181a767238b Mon Sep 17 00:00:00 2001
 From: Peter Hilber <quic_philber@quicinc.com>
 Date: Fri, 9 May 2025 18:07:24 +0200
-Subject: [PATCH 30/32] virtio_rtc: Add Arm Generic Timer cross-timestamping
+Subject: [PATCH 32/34] virtio_rtc: Add Arm Generic Timer cross-timestamping
 
 For platforms using the Arm Generic Timer, add precise cross-timestamping
 support to virtio_rtc.

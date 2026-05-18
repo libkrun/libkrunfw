@@ -1,7 +1,7 @@
-From 3a04da8c906e94b8f9e392885f7b6571c44d27b9 Mon Sep 17 00:00:00 2001
+From 66e0500ef1da76ece09fcdc9f4630620c9e4d182 Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Tue, 10 Mar 2026 13:33:11 +0100
-Subject: [PATCH 24/32] Revert "vsock/virtio: Allocate nonlinear SKBs for
+Subject: [PATCH 26/34] Revert "vsock/virtio: Allocate nonlinear SKBs for
  handling large transmit buffers"
 
 This reverts commit 69c5bf306115e6047e0d902f8c6551fff74a71ff.
@@ -10,7 +10,7 @@ This reverts commit 69c5bf306115e6047e0d902f8c6551fff74a71ff.
  1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index f274cde784f7..4733c1d234d5 100644
+index 44da05eb62c7..3e731d94e834 100644
 --- a/net/vmw_vsock/virtio_transport_common.c
 +++ b/net/vmw_vsock/virtio_transport_common.c
 @@ -111,8 +111,7 @@ static int virtio_transport_fill_skb(struct sk_buff *skb,

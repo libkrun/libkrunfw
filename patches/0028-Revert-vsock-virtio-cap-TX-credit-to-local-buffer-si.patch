@@ -1,7 +1,7 @@
-From 55f776caa30a3c78e799e407cc78c765dd0fce66 Mon Sep 17 00:00:00 2001
+From 6c7dab60e089e894ce9e810c42e02676c5f9cc6b Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Tue, 10 Mar 2026 16:00:26 +0100
-Subject: [PATCH 26/32] Revert "vsock/virtio: cap TX credit to local buffer
+Subject: [PATCH 28/34] Revert "vsock/virtio: cap TX credit to local buffer
  size"
 
 This reverts commit c0e42fb0e054c2b2ec4ee80f48ccd256ae0227ce.
@@ -10,7 +10,7 @@ This reverts commit c0e42fb0e054c2b2ec4ee80f48ccd256ae0227ce.
  1 file changed, 2 insertions(+), 12 deletions(-)
 
 diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 4733c1d234d5..bed7fe5a7203 100644
+index 3e731d94e834..bb8407b3d593 100644
 --- a/net/vmw_vsock/virtio_transport_common.c
 +++ b/net/vmw_vsock/virtio_transport_common.c
 @@ -850,15 +850,6 @@ virtio_transport_seqpacket_dequeue(struct vsock_sock *vsk,
@@ -38,7 +38,7 @@ index 4733c1d234d5..bed7fe5a7203 100644
  		spin_unlock_bh(&vvs->tx_lock);
  		return -EMSGSIZE;
  	}
-@@ -938,8 +929,7 @@ static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs)
+@@ -953,8 +944,7 @@ static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs)
  	 * we have bytes in flight (tx_cnt - peer_fwd_cnt), the subtraction
  	 * does not underflow.
  	 */

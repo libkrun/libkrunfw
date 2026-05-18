@@ -1,7 +1,7 @@
 From 365643863f3166d827024d4b6067222a6453d015 Mon Sep 17 00:00:00 2001
 From: Bobby Eshleman <bobby.eshleman () bytedance ! com>
 Date: Sat, 10 Jun 2023 00:58:30 +0000
-Subject: [PATCH 05/32] vsock: support multi-transport datagrams
+Subject: [PATCH 05/34] vsock: support multi-transport datagrams
 
 This patch adds support for multi-transport datagrams.
 
