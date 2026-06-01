@@ -1,7 +1,7 @@
-From 8ca8db16da5001752ca7d782a60d9af85e7899b7 Mon Sep 17 00:00:00 2001
+From 72bd47b54d947e297cf4298b8da2cdfc59215135 Mon Sep 17 00:00:00 2001
 From: Bobby Eshleman <bobby.eshleman () bytedance ! com>
 Date: Sat, 10 Jun 2023 00:58:28 +0000
-Subject: [PATCH 03/34] vsock/dgram: generalize recvmsg and drop
+Subject: [PATCH 03/30] vsock/dgram: generalize recvmsg and drop
  transport->dgram_dequeue
 
 This commit drops the transport->dgram_dequeue callback and makes
@@ -81,7 +81,7 @@ index 70302c92d329..9ba6e2bcef94 100644
  	/* STREAM. */
  	/* TODO: stream_bind() */
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 282d97323324..fccb4761b8af 100644
+index 1db7a1f8e55f..460c9893e112 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
 @@ -1359,10 +1359,62 @@ static int vsock_dgram_connect(struct socket *sock,
@@ -151,7 +151,7 @@ index 282d97323324..fccb4761b8af 100644
  
  int vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
 diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
-index 56c232cf5b0f..cc0a6c3401d3 100644
+index 34871ed1a099..0746f7fb2809 100644
 --- a/net/vmw_vsock/hyperv_transport.c
 +++ b/net/vmw_vsock/hyperv_transport.c
 @@ -557,8 +557,17 @@ static int hvs_dgram_bind(struct vsock_sock *vsk, struct sockaddr_vm *addr)
@@ -203,10 +203,10 @@ index b6569b0ca2bb..d1107b65445e 100644
  		.stream_dequeue           = virtio_transport_stream_dequeue,
  		.stream_enqueue           = virtio_transport_stream_enqueue,
 diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 9b1f9a83c711..3ef8ff2a8b3c 100644
+index 9550773fe1e1..f5f61f87da83 100644
 --- a/net/vmw_vsock/virtio_transport_common.c
 +++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1069,6 +1069,24 @@ int virtio_transport_dgram_bind(struct vsock_sock *vsk,
+@@ -1053,6 +1053,24 @@ int virtio_transport_dgram_bind(struct vsock_sock *vsk,
  }
  EXPORT_SYMBOL_GPL(virtio_transport_dgram_bind);
  

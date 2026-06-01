@@ -1,7 +1,7 @@
-From dcebe73b6fe14c1eb1c098c58dbcac9edc1df508 Mon Sep 17 00:00:00 2001
+From adc7bebfd1e4dff1a2160fb587fc534f38463cba Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Thu, 28 May 2026 11:43:46 +0200
-Subject: [PATCH 10/34] virtio/vsock: implement has_data for DGRAM
+Subject: [PATCH 10/30] virtio/vsock: implement has_data for DGRAM
 
 Signed-off-by: Sergio Lopez <slp@redhat.com>
 ---
@@ -46,7 +46,7 @@ index 5f93bb290a83..45469aa8cf60 100644
  	/* STREAM. */
  	/* TODO: stream_bind() */
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 23700ee6d732..ebd995fc6f5d 100644
+index 3b420d8f0c84..73e2eac4c3af 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
 @@ -1007,6 +1007,15 @@ s64 vsock_stream_has_data(struct vsock_sock *vsk)
@@ -91,10 +91,10 @@ index 58d15edd296e..43eeeb32a318 100644
  		.stream_dequeue           = virtio_transport_stream_dequeue,
  		.stream_enqueue           = virtio_transport_stream_enqueue,
 diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index b3ee9ce90b5d..2cae5e2295b1 100644
+index a7e9bcc49a8e..6498ab12ce31 100644
 --- a/net/vmw_vsock/virtio_transport_common.c
 +++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -907,6 +907,21 @@ int virtio_transport_dgram_get_length(struct sk_buff *skb, size_t *len)
+@@ -862,6 +862,21 @@ int virtio_transport_dgram_get_length(struct sk_buff *skb, size_t *len)
  }
  EXPORT_SYMBOL_GPL(virtio_transport_dgram_get_length);
  

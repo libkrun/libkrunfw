@@ -1,7 +1,7 @@
-From 70a9efbbe8fea5c2a167a3ecd1bb97fdba479c7a Mon Sep 17 00:00:00 2001
+From 3e558b0b5aff5580bb9ed17828728c590d4d286f Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Thu, 11 Apr 2024 09:51:21 +0900
-Subject: [PATCH 15/34] arm64: Implement PR_{GET,SET}_MEM_MODEL for always-TSO
+Subject: [PATCH 15/30] arm64: Implement PR_{GET,SET}_MEM_MODEL for always-TSO
  CPUs
 
 Some ARM64 implementations are known to always use the TSO memory model.
@@ -76,7 +76,7 @@ index 2b112f3b7510..2a11cdefbe04 100644
  obj-$(CONFIG_COMPAT)			+= sys32.o signal32.o			\
  					   sys_compat.o
 diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 06ee74cc3dd9..e851e901bdaa 100644
+index b5bdb19c131f..4782d643ebed 100644
 --- a/arch/arm64/kernel/cpufeature.c
 +++ b/arch/arm64/kernel/cpufeature.c
 @@ -1039,7 +1039,7 @@ static void init_cpu_ftr_reg(u32 sys_reg, u64 new)

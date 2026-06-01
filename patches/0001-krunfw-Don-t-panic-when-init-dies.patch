@@ -1,7 +1,7 @@
-From db20a79e5810bc9fc77655acde5c8e13e7942ba9 Mon Sep 17 00:00:00 2001
+From 10ae66b1024db238899ccce1f790620ab5c92aa9 Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Thu, 2 Mar 2023 07:34:49 +0100
-Subject: [PATCH 01/34] krunfw: Don't panic when init dies
+Subject: [PATCH 01/30] krunfw: Don't panic when init dies
 
 In libkrun, the isolated process runs as PID 1. When it exits,
 trigger an orderly reboot instead of panic'ing.
@@ -16,7 +16,7 @@ Signed-off-by: Sergio Lopez <slp@redhat.com>
  2 files changed, 8 insertions(+)
 
 diff --git a/kernel/exit.c b/kernel/exit.c
-index d465b36bcc86..f5fd756b9097 100644
+index b91124b2d334..b78ea85c953a 100644
 --- a/kernel/exit.c
 +++ b/kernel/exit.c
 @@ -69,6 +69,8 @@
@@ -28,7 +28,7 @@ index d465b36bcc86..f5fd756b9097 100644
  #include <linux/uaccess.h>
  
  #include <uapi/linux/wait.h>
-@@ -905,8 +907,12 @@ void __noreturn do_exit(long code)
+@@ -906,8 +908,12 @@ void __noreturn do_exit(long code)
  		 * immediately to get a useable coredump.
  		 */
  		if (unlikely(is_global_init(tsk)))

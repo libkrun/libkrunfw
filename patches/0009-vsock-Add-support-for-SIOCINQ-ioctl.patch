@@ -1,7 +1,7 @@
-From 43fbbbc07f1ababcbfb305548aacdb5711dacf80 Mon Sep 17 00:00:00 2001
+From 52e07de426f743550a3954c9d5168ecfe051ef28 Mon Sep 17 00:00:00 2001
 From: Xuewei Niu <niuxuewei.nxw@antgroup.com>
 Date: Tue, 8 Jul 2025 14:36:12 +0800
-Subject: [PATCH 09/34] vsock: Add support for SIOCINQ ioctl
+Subject: [PATCH 09/30] vsock: Add support for SIOCINQ ioctl
 
 Add support for SIOCINQ ioctl, indicating the length of bytes unread in the
 socket. The value is obtained from `vsock_stream_has_data()`.
@@ -18,7 +18,7 @@ Signed-off-by: Sergio Lopez <slp@redhat.com>
  1 file changed, 22 insertions(+)
 
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index e949c9892c2c..23700ee6d732 100644
+index 7c9c8696a07a..3b420d8f0c84 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
 @@ -1545,6 +1545,28 @@ static int vsock_do_ioctl(struct socket *sock, unsigned int cmd,
