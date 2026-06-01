@@ -1,7 +1,7 @@
-From e6906aec14c722b9feda60cddbbf3d8068e3ba20 Mon Sep 17 00:00:00 2001
+From 5d876db7ea5379b0cc6673a02ce8095b804a0e66 Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Sun, 18 Jan 2026 23:37:30 +0100
-Subject: [PATCH 24/34] fuse: mark DAX inode releases as blocking
+Subject: [PATCH 24/30] fuse: mark DAX inode releases as blocking
 
 Commit 26e5c67deb2e ("fuse: fix livelock in synchronous file put from
 fuseblk workers") made fputs on closing files always asynchronous.

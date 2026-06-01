@@ -1,7 +1,7 @@
-From 365643863f3166d827024d4b6067222a6453d015 Mon Sep 17 00:00:00 2001
+From 6f8f8b27658ac6345af71dea9ef97850faf704cd Mon Sep 17 00:00:00 2001
 From: Bobby Eshleman <bobby.eshleman () bytedance ! com>
 Date: Sat, 10 Jun 2023 00:58:30 +0000
-Subject: [PATCH 05/34] vsock: support multi-transport datagrams
+Subject: [PATCH 05/30] vsock: support multi-transport datagrams
 
 This patch adds support for multi-transport datagrams.
 
@@ -82,7 +82,7 @@ index 06d5b15642ae..6c8791d3bc70 100644
  int virtio_transport_dgram_get_cid(struct sk_buff *skb, unsigned int *cid);
  int virtio_transport_dgram_get_port(struct sk_buff *skb, unsigned int *port);
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 4a8f62e7520d..c15d9a6f8b89 100644
+index 8049e3b4f377..9046ea82a37b 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
 @@ -448,6 +448,18 @@ vsock_connectible_lookup_transport(unsigned int cid, __u8 flags)
@@ -238,7 +238,7 @@ index 4a8f62e7520d..c15d9a6f8b89 100644
  
  	/* sock map disallows redirection of non-TCP sockets with sk_state !=
 diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
-index cc0a6c3401d3..4c6d705cc9e6 100644
+index 0746f7fb2809..b5822a5ed92f 100644
 --- a/net/vmw_vsock/hyperv_transport.c
 +++ b/net/vmw_vsock/hyperv_transport.c
 @@ -552,11 +552,6 @@ static void hvs_destruct(struct vsock_sock *vsk)
@@ -274,10 +274,10 @@ index d1107b65445e..e9828815e741 100644
  		.dgram_allow              = virtio_transport_dgram_allow,
  		.dgram_get_cid		  = virtio_transport_dgram_get_cid,
 diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 3ef8ff2a8b3c..70eee056871c 100644
+index f5f61f87da83..3a996272764b 100644
 --- a/net/vmw_vsock/virtio_transport_common.c
 +++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1062,13 +1062,6 @@ bool virtio_transport_stream_allow(u32 cid, u32 port)
+@@ -1046,13 +1046,6 @@ bool virtio_transport_stream_allow(u32 cid, u32 port)
  }
  EXPORT_SYMBOL_GPL(virtio_transport_stream_allow);
  

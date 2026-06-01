@@ -1,7 +1,7 @@
-From ff6a8afce82d72c22b8e320232d959d70e16c306 Mon Sep 17 00:00:00 2001
+From 47d48798b891f67b109323a65894a00b4bf90f84 Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Thu, 11 Apr 2024 09:51:22 +0900
-Subject: [PATCH 16/34] arm64: Introduce scaffolding to add ACTLR_EL1 to thread
+Subject: [PATCH 16/30] arm64: Introduce scaffolding to add ACTLR_EL1 to thread
  state
 
 Some CPUs expose IMPDEF features in ACTLR_EL1 that can be meaningfully
