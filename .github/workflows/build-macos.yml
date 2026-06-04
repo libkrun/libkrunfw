@@ -1,0 +1,33 @@
+name: Build macOS kernel (experimental)
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build aarch64 kernel on macOS
+    runs-on: macos-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v6
+
+      - name: Create case-sensitive build volume
+        run: |
+          hdiutil create -size 8g -type SPARSE -fs "Case-sensitive APFS" -volname libkrunfw-cs "$RUNNER_TEMP/libkrunfw-cs.sparseimage"
+          hdiutil attach "$RUNNER_TEMP/libkrunfw-cs.sparseimage" -mountpoint "$RUNNER_TEMP/libkrunfw-cs" -nobrowse
+          rsync -a ./ "$RUNNER_TEMP/libkrunfw-cs/libkrunfw/"
+          echo "BUILD_DIR=$RUNNER_TEMP/libkrunfw-cs/libkrunfw" >> "$GITHUB_ENV"
+
+      - name: Install dependencies
+        run: |
+          brew install gnu-sed gnu-tar llvm lld make bc bison flex
+          pip3 install pyelftools
+
+      - name: Build libkrunfw
+        working-directory: ${{ env.BUILD_DIR }}
+        run: |
+          for pkg in gnu-sed gnu-tar; do
+            PATH="$(brew --prefix)/opt/${pkg}/libexec/gnubin:$PATH"
+          done
+          export PATH
+          make

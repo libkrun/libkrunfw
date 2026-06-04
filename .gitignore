@@ -2,6 +2,7 @@ __pycache__
 *.pyc
 *~
 libkrunfw.so*
+libkrunfw.*.dylib
 kernel.c
 vmlinux
 /tarballs
