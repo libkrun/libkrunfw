@@ -1,0 +1,6 @@
+Vendored from https://github.com/bee-headers/headers.
+
+* elf.h — GNU Lesser General Public License v2.1 only (from GNU C Library)
+* endian.h, byteswap.h — GNU General Public License v2.0 only
+
+See the top-level LICENSE-GPL-2.0-only and LICENSE-LGPL-2.1-only files in this repository.

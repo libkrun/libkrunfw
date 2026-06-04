@@ -13,6 +13,19 @@ KERNEL_FLAGS = KBUILD_BUILD_TIMESTAMP=$(TIMESTAMP)
 KERNEL_FLAGS += KBUILD_BUILD_USER=root
 KERNEL_FLAGS += KBUILD_BUILD_HOST=libkrunfw
 
+ifeq ($(origin OS),command line)
+    # Use the explicit OS value from command line (e.g. make OS=Windows)
+else
+    OS := $(shell uname -s)
+endif
+ifeq ($(OS),Darwin)
+    ifeq ($(origin MACOS_BUILDER),command line)
+        # Use the explicit MACOS_BUILDER value from command line (e.g. MACOS_BUILDER=native)
+    else
+        MACOS_BUILDER := krunvm
+    endif
+endif
+
 ifeq ($(SEV),1)
     VARIANT = -sev
     KERNEL_PATCHES += $(shell find patches-tee/ -name "0*.patch" | sort)
@@ -23,13 +36,13 @@ ifeq ($(TDX),1)
 endif
 
 HOSTARCH = $(shell uname -m)
-ifeq ($(origin OS),command line)
-    # Use the explicit OS value from command line (e.g. make OS=Windows)
-else
-    OS := $(shell uname -s)
-endif
 ifeq ($(ARCH),)
 	GUESTARCH := $(HOSTARCH)
+ifeq ($(OS),Darwin)
+ifeq ($(HOSTARCH),arm64)
+	GUESTARCH := aarch64
+endif
+endif
 	STRIP := strip
 else ifeq ($(ARCH),arm64)
 	GUESTARCH := aarch64
@@ -81,6 +94,30 @@ ifeq ($(PREFIX),)
     PREFIX := /usr/local
 endif
 
+ifeq ($(OS),Darwin)
+ifeq ($(MACOS_BUILDER),native)
+    # Native macOS kernel build tools (override on the make command line).
+    KERNEL_MAKE ?= gmake
+    KERNEL_CC ?= clang
+    KERNEL_LD ?= ld.lld
+    KERNEL_AR ?= llvm-ar
+    KERNEL_NM ?= llvm-nm
+    KERNEL_OBJCOPY ?= llvm-objcopy
+    KERNEL_OBJDUMP ?= llvm-objdump
+    KERNEL_STRIP ?= llvm-strip
+    KERNEL_READELF ?= llvm-readelf
+    KERNEL_HOSTCC ?= $(KERNEL_CC)
+
+    KERNEL_KBUILD_FLAGS = LLVM=1 ARCH=arm64 \
+        CC=$(KERNEL_CC) LD=$(KERNEL_LD) AR=$(KERNEL_AR) NM=$(KERNEL_NM) \
+        OBJCOPY=$(KERNEL_OBJCOPY) OBJDUMP=$(KERNEL_OBJDUMP) STRIP=$(KERNEL_STRIP) \
+        READELF=$(KERNEL_READELF) HOSTCC=$(KERNEL_HOSTCC) \
+        $(KERNEL_FLAGS)
+    MACOS_HOST_INCLUDE = $(CURDIR)/include/macos-host
+    KERNEL_HOSTFLAGS = HOSTCFLAGS="-I$(MACOS_HOST_INCLUDE) -D_UUID_T -D__GETHOSTUUID_H"
+endif
+endif
+
 ifeq ($(SEV),1)
     QBOOT_BINARY = qboot/sev/bios.bin
     QBOOT_C_BUNDLE = qboot.c
@@ -106,15 +143,37 @@ $(KERNEL_SOURCES): $(KERNEL_TARBALL)
 	tar xf $(KERNEL_TARBALL)
 	for patch in $(KERNEL_PATCHES); do patch -p1 -d $(KERNEL_SOURCES) < "$$patch"; done
 	cp config-libkrunfw$(VARIANT)_$(GUESTARCH) $(KERNEL_SOURCES)/.config
+ifeq ($(OS),Darwin)
+ifeq ($(MACOS_BUILDER),native)
+	cd $(KERNEL_SOURCES) && $(KERNEL_MAKE) $(KERNEL_KBUILD_FLAGS) $(KERNEL_HOSTFLAGS) olddefconfig
+else
 	cd $(KERNEL_SOURCES) ; $(MAKE) olddefconfig
+endif
+else
+	cd $(KERNEL_SOURCES) ; $(MAKE) olddefconfig
+endif
 
 $(KERNEL_BINARY_$(GUESTARCH)): $(KERNEL_SOURCES)
+ifeq ($(OS),Darwin)
+ifeq ($(MACOS_BUILDER),native)
+	cd $(KERNEL_SOURCES) && rm -f .version && $(KERNEL_MAKE) $(MAKEFLAGS) $(KERNEL_KBUILD_FLAGS) $(KERNEL_HOSTFLAGS)
+else
 	cd $(KERNEL_SOURCES) ; rm -f .version ; $(MAKE) $(MAKEFLAGS) $(KERNEL_FLAGS)
+endif
+else
+	cd $(KERNEL_SOURCES) ; rm -f .version ; $(MAKE) $(MAKEFLAGS) $(KERNEL_FLAGS)
+endif
 
 ifeq ($(OS),Darwin)
+ifeq ($(MACOS_BUILDER),krunvm)
 $(KERNEL_C_BUNDLE):
-	@echo "Building on macOS, using ./build_on_krunvm.sh"
+	@echo "Building on macOS using krunvm (./build_on_krunvm.sh)"
 	./build_on_krunvm.sh
+else
+$(KERNEL_C_BUNDLE): $(KERNEL_BINARY_$(GUESTARCH))
+	@echo "Generating $(KERNEL_C_BUNDLE) from $(KERNEL_BINARY_$(GUESTARCH))..."
+	@python3 bin2cbundle.py --os $(OS) -t $(KBUNDLE_TYPE_$(GUESTARCH)) $(KERNEL_BINARY_$(GUESTARCH)) kernel.c
+endif
 else
 $(KERNEL_C_BUNDLE): $(KERNEL_BINARY_$(GUESTARCH))
 	@echo "Generating $(KERNEL_C_BUNDLE) from $(KERNEL_BINARY_$(GUESTARCH))..."
