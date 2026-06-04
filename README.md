@@ -34,13 +34,12 @@ sudo make SEV=1 install
 
 ### macOS
 
-#### Requirements
+#### Building the library using krunvm
 
 Compiling a Linux kernel natively on macOS is not an easy feat. For this reason, the recommended way for building ```libkrunfw``` in this platform is by already having installed a binary version of [krunvm](https://github.com/containers/krunvm) and its dependencies ([libkrun](https://github.com/containers/libkrun), and ```libkrunfw``` itself), such as the one available in the [krunvm Homebrew repo](https://github.com/slp/homebrew-krun), and then executing the [build_on_krunvm.sh](build_on_krunvm.sh) script found in this repository.
 
 This will create a lightweight Linux VM using ```krunvm``` with the current working directory mapped inside it, and build the kernel on it.
 
-#### Building the library using krunvm
 ```
 ./build_on_krunvm.sh
 make
@@ -53,6 +52,30 @@ BUILDER=debian ./build_on_krunvm.sh
 ```
 
 In general, `./build_on_krunvm.sh` will always delegate to `./build_on_krunvm_${BUILDER}.sh` so additional environments can be added like this if needed.
+
+#### Building the library natively (experimental)
+
+The Linux kernel can be compiled natively on macOS. You will need some dependencies:
+* LLVM toolchain (`clang`, `lld`, etc.) (the version provided by Apple may not work)
+* GNU `make`
+* GNU `sed`
+* GNU `tar`
+* A case-sensitive file system
+
+The name of the `make`, `cc`, and some other executables can be overridden as arguments to the Makefile. If needed, you can also prepend to the `PATH` so that GNU versions of executables are chosen at higher priority.
+
+```
+# Create a case-sensitive disk image and mount it
+hdiutil create -size 8g -type SPARSE -fs "Case-sensitive APFS" -volname libkrunfw-cs ../libkrunfw-cs.sparseimage
+hdiutil attach ../libkrunfw-cs.sparseimage
+
+# Copy this source tree into the mounted disk image
+rsync -a ./ /Volumes/libkrunfw-cs/
+
+# Set up paths to the dependencies as needed, for example
+export PATH=/path/to/dir/containing/gnu/sed:/path/to/dir/containing/gnu/tar:$PATH
+make MACOS_BUILDER=native
+```
 
 ### Windows (cross-compilation from Linux)
 
