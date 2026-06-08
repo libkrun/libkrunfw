@@ -11,7 +11,13 @@ By having the kernel bundled in a dynamic library, ```libkrun``` can leave to th
 #### Requirements
 * The toolchain your distribution needs to build a Linux kernel.
 * Python 3
-* ```pyelftools``` (package ```python3-pyelftools``` in Fedora and Ubuntu)
+* ```pyelftools``` (package ```python3-pyelftools``` in Fedora)
+
+On Debian/Ubuntu:
+
+```sh
+apt install python3-pyelftools build-essential flex bison libelf-dev
+```
 
 #### Building and installing the library
 ```
