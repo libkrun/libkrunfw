@@ -73,7 +73,7 @@ KRUNFW_SONAME_Windows = libkrunfw.dll
 KRUNFW_BASE_Windows = libkrunfw.dll
 SONAME_Windows =
 
-LIBDIR_Linux = lib64
+LIBDIR_Linux = $(shell if [ -e /etc/debian_version ]; then echo 'lib/$(HOSTARCH)-linux-gnu'; else echo lib64; fi)
 LIBDIR_Darwin = lib
 LIBDIR_Windows = bin
 
