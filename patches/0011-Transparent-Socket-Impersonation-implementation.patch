@@ -1,7 +1,7 @@
-From 338b7e34b57dfb82129ec2b022735c3e3f71ef59 Mon Sep 17 00:00:00 2001
+From 6ec974c7d185814ca12661e8081dcd4cb4ae179b Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Thu, 19 May 2022 22:38:26 +0200
-Subject: [PATCH 09/26] Transparent Socket Impersonation implementation
+Subject: [PATCH 11/30] Transparent Socket Impersonation implementation
 
 Transparent Socket Impersonation (AF_TSI) is an address family that
 provides sockets presenting two simultaneous personalities, one of
@@ -31,11 +31,11 @@ Signed-off-by: Matej Hrica <mhrica@redhat.com>
  net/socket.c                        |    3 +
  net/tsi/Kconfig                     |    7 +
  net/tsi/Makefile                    |    4 +
- net/tsi/af_tsi.c                    | 1571 +++++++++++++++++++++++++++
+ net/tsi/af_tsi.c                    | 1577 +++++++++++++++++++++++++++
  net/tsi/af_tsi.h                    |  107 ++
  security/selinux/hooks.c            |    8 +-
  security/selinux/include/classmap.h |    3 +-
- 10 files changed, 1710 insertions(+), 3 deletions(-)
+ 10 files changed, 1716 insertions(+), 3 deletions(-)
  create mode 100644 net/tsi/Kconfig
  create mode 100644 net/tsi/Makefile
  create mode 100644 net/tsi/af_tsi.c
@@ -90,7 +90,7 @@ index 65bb8c72a35e..c1db937f3212 100644
  obj-$(CONFIG_NET_HANDSHAKE)	+= handshake/
 +obj-$(CONFIG_TSI)		+= tsi/
 diff --git a/net/socket.c b/net/socket.c
-index a0f6f8b3376d..f317719ee75c 100644
+index 878155076bc0..a55927134851 100644
 --- a/net/socket.c
 +++ b/net/socket.c
 @@ -217,6 +217,9 @@ static const char * const pf_family_names[] = {
@@ -128,10 +128,10 @@ index 000000000000..8b3cf74116a5
 +tsi-y := af_tsi.o
 diff --git a/net/tsi/af_tsi.c b/net/tsi/af_tsi.c
 new file mode 100644
-index 000000000000..e266f968405b
+index 000000000000..3d2bcd8d2ba4
 --- /dev/null
 +++ b/net/tsi/af_tsi.c
-@@ -0,0 +1,1571 @@
+@@ -0,0 +1,1577 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
 + * Transparent Socket Impersonation Driver
@@ -908,11 +908,13 @@ index 000000000000..e266f968405b
 +	struct sock *sk = sock->sk;
 +	struct tsi_sock *tsk;
 +	struct socket *isocket;
++	struct socket *vsocket;
 +	int err;
 +
 +	lock_sock(sk);
 +	tsk = tsi_sk(sock->sk);
 +	isocket = tsk->isocket;
++	vsocket = tsk->vsocket;
 +
 +	switch (tsk->status) {
 +	case S_HYBRID:
@@ -924,7 +926,11 @@ index 000000000000..e266f968405b
 +		}
 +		break;
 +	case S_VSOCK:
-+		err = -EOPNOTSUPP;
++		if (vsocket) {
++			err = vsocket->ops->ioctl(vsocket, cmd, arg);
++		} else {
++			err = -EOPNOTSUPP;
++		}
 +		break;
 +	}
 +
@@ -1817,7 +1823,7 @@ index 000000000000..b74966fd7ae3
 +
 +#endif
 diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index fc926d3cac6e..6e81037192c8 100644
+index 8e31d3b60fc6..aae3267fa9ee 100644
 --- a/security/selinux/hooks.c
 +++ b/security/selinux/hooks.c
 @@ -1302,7 +1302,13 @@ static inline u16 socket_type_to_security_class(int family, int type, int protoc
@@ -1856,5 +1862,5 @@ index 7229c9bf6c27..f08d24321603 100644
  #error New address family defined, please update secclass_map.
  #endif
 -- 
-2.52.0
+2.54.0
 
