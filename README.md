@@ -83,7 +83,16 @@ This will:
 
 ## Known limitations
 
-* To save memory, the embedded kernel is configured with ```CONFIG_NR_CPUS=8```, which limits the maximum number of supported CPUs to 8. If this kernel runs in a VM with more CPUs, only the first 8 will be initialized and used.
+* To save memory, the embedded kernel is configured with a limited number of CPUS. The CPU limit depends on the config target. If this kernel runs in a VM with more CPUs than it is configured for, only the first N CPUs will be initialized and used.
+
+| Target         | `NR_CPUS=` |
+|----------------|------------|
+| x86_64         | 16         |
+| sev_x86_64     | 8          |
+| tdx_x86_64     | 8          |
+| windows_x86_64 | 16         |
+| aarch64        | 16         |
+| riscv64        | 16         |
 
 ## License
 
