@@ -1,4 +1,4 @@
-From 6288d84bd2be25daba854cff0d2d8fbedab76b5b Mon Sep 17 00:00:00 2001
+From a52e88b2d0e2162462e32f78b36fbc35b11444c9 Mon Sep 17 00:00:00 2001
 From: Peter Hilber <quic_philber@quicinc.com>
 Date: Fri, 9 May 2025 18:07:23 +0200
 Subject: [PATCH 27/30] virtio_rtc: Add PTP clocks
@@ -57,7 +57,7 @@ Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
  create mode 100644 drivers/virtio/virtio_rtc_ptp.c
 
 diff --git a/drivers/virtio/Kconfig b/drivers/virtio/Kconfig
-index fd6b826af19a..c98e43a1ee95 100644
+index fd6b826af..c98e43a1e 100644
 --- a/drivers/virtio/Kconfig
 +++ b/drivers/virtio/Kconfig
 @@ -194,11 +194,33 @@ config VIRTIO_RTC
@@ -96,7 +96,7 @@ index fd6b826af19a..c98e43a1ee95 100644
 +
  endif # VIRTIO_MENU
 diff --git a/drivers/virtio/Makefile b/drivers/virtio/Makefile
-index c41c4c0f9264..88d6fb8d4731 100644
+index c41c4c0f9..88d6fb8d4 100644
 --- a/drivers/virtio/Makefile
 +++ b/drivers/virtio/Makefile
 @@ -16,3 +16,4 @@ obj-$(CONFIG_VIRTIO_DMA_SHARED_BUFFER) += virtio_dma_buf.o
@@ -105,7 +105,7 @@ index c41c4c0f9264..88d6fb8d4731 100644
  virtio_rtc-y := virtio_rtc_driver.o
 +virtio_rtc-$(CONFIG_VIRTIO_RTC_PTP) += virtio_rtc_ptp.o
 diff --git a/drivers/virtio/virtio_rtc_driver.c b/drivers/virtio/virtio_rtc_driver.c
-index c87ee4e63424..7499908ee34c 100644
+index c87ee4e63..7499908ee 100644
 --- a/drivers/virtio/virtio_rtc_driver.c
 +++ b/drivers/virtio/virtio_rtc_driver.c
 @@ -38,11 +38,16 @@ struct viortc_vq {
@@ -270,7 +270,7 @@ index c87ee4e63424..7499908ee34c 100644
  	virtio_reset_device(vdev);
  	vdev->config->del_vqs(vdev);
 diff --git a/drivers/virtio/virtio_rtc_internal.h b/drivers/virtio/virtio_rtc_internal.h
-index 9c249c15b68f..2e589903d04f 100644
+index 9c249c15b..2e589903d 100644
 --- a/drivers/virtio/virtio_rtc_internal.h
 +++ b/drivers/virtio/virtio_rtc_internal.h
 @@ -9,6 +9,7 @@
@@ -333,7 +333,7 @@ index 9c249c15b68f..2e589903d04f 100644
  #endif /* _VIRTIO_RTC_INTERNAL_H_ */
 diff --git a/drivers/virtio/virtio_rtc_ptp.c b/drivers/virtio/virtio_rtc_ptp.c
 new file mode 100644
-index 000000000000..f84599950cd4
+index 000000000..f84599950
 --- /dev/null
 +++ b/drivers/virtio/virtio_rtc_ptp.c
 @@ -0,0 +1,347 @@

@@ -1,4 +1,4 @@
-From 72bd47b54d947e297cf4298b8da2cdfc59215135 Mon Sep 17 00:00:00 2001
+From 8bbca5cb1813c344d9d4b2a8e29762635b811372 Mon Sep 17 00:00:00 2001
 From: Bobby Eshleman <bobby.eshleman () bytedance ! com>
 Date: Sat, 10 Jun 2023 00:58:28 +0000
 Subject: [PATCH 03/30] vsock/dgram: generalize recvmsg and drop
@@ -23,7 +23,7 @@ Signed-off-by: Bobby Eshleman <bobby.eshleman@bytedance.com>
  9 files changed, 137 insertions(+), 52 deletions(-)
 
 diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 78cc66fbb3dd..fee8d1380e95 100644
+index 78cc66fbb..fee8d1380 100644
 --- a/drivers/vhost/vsock.c
 +++ b/drivers/vhost/vsock.c
 @@ -421,9 +421,11 @@ static struct virtio_transport vhost_transport = {
@@ -40,7 +40,7 @@ index 78cc66fbb3dd..fee8d1380e95 100644
  		.stream_enqueue           = virtio_transport_stream_enqueue,
  		.stream_dequeue           = virtio_transport_stream_dequeue,
 diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index 0c67543a45c8..06d5b15642ae 100644
+index 0c67543a4..06d5b1564 100644
 --- a/include/linux/virtio_vsock.h
 +++ b/include/linux/virtio_vsock.h
 @@ -260,6 +260,9 @@ bool virtio_transport_stream_allow(u32 cid, u32 port);
@@ -54,7 +54,7 @@ index 0c67543a45c8..06d5b15642ae 100644
  int virtio_transport_connect(struct vsock_sock *vsk);
  
 diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index 70302c92d329..9ba6e2bcef94 100644
+index 70302c92d..9ba6e2bce 100644
 --- a/include/net/af_vsock.h
 +++ b/include/net/af_vsock.h
 @@ -120,11 +120,20 @@ struct vsock_transport {
@@ -81,7 +81,7 @@ index 70302c92d329..9ba6e2bcef94 100644
  	/* STREAM. */
  	/* TODO: stream_bind() */
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 1db7a1f8e55f..460c9893e112 100644
+index 1db7a1f8e..460c9893e 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
 @@ -1359,10 +1359,62 @@ static int vsock_dgram_connect(struct socket *sock,
@@ -151,7 +151,7 @@ index 1db7a1f8e55f..460c9893e112 100644
  
  int vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
 diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
-index 34871ed1a099..0746f7fb2809 100644
+index 34871ed1a..0746f7fb2 100644
 --- a/net/vmw_vsock/hyperv_transport.c
 +++ b/net/vmw_vsock/hyperv_transport.c
 @@ -557,8 +557,17 @@ static int hvs_dgram_bind(struct vsock_sock *vsk, struct sockaddr_vm *addr)
@@ -186,7 +186,7 @@ index 34871ed1a099..0746f7fb2809 100644
  	.dgram_allow              = hvs_dgram_allow,
  
 diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index b6569b0ca2bb..d1107b65445e 100644
+index b6569b0ca..d1107b654 100644
 --- a/net/vmw_vsock/virtio_transport.c
 +++ b/net/vmw_vsock/virtio_transport.c
 @@ -552,9 +552,11 @@ static struct virtio_transport virtio_transport = {
@@ -203,7 +203,7 @@ index b6569b0ca2bb..d1107b65445e 100644
  		.stream_dequeue           = virtio_transport_stream_dequeue,
  		.stream_enqueue           = virtio_transport_stream_enqueue,
 diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 9550773fe1e1..f5f61f87da83 100644
+index 9550773fe..f5f61f87d 100644
 --- a/net/vmw_vsock/virtio_transport_common.c
 +++ b/net/vmw_vsock/virtio_transport_common.c
 @@ -1053,6 +1053,24 @@ int virtio_transport_dgram_bind(struct vsock_sock *vsk,
@@ -232,7 +232,7 @@ index 9550773fe1e1..f5f61f87da83 100644
  {
  	return false;
 diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
-index aca3132689cf..956109393596 100644
+index aca313268..956109393 100644
 --- a/net/vmw_vsock/vmci_transport.c
 +++ b/net/vmw_vsock/vmci_transport.c
 @@ -1731,57 +1731,40 @@ static int vmci_transport_dgram_enqueue(
@@ -331,7 +331,7 @@ index aca3132689cf..956109393596 100644
  	.stream_enqueue = vmci_transport_stream_enqueue,
  	.stream_has_data = vmci_transport_stream_has_data,
 diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopback.c
-index 6e78927a598e..3d5e05d8950f 100644
+index 6e78927a5..3d5e05d89 100644
 --- a/net/vmw_vsock/vsock_loopback.c
 +++ b/net/vmw_vsock/vsock_loopback.c
 @@ -66,9 +66,11 @@ static struct virtio_transport loopback_transport = {

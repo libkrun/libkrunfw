@@ -1,4 +1,4 @@
-From 874ed6f7613d8b57ddeb5cc53a5e04e3d29cf25c Mon Sep 17 00:00:00 2001
+From d496b10a9db4e1f93f1ebde599ad010d10a31e29 Mon Sep 17 00:00:00 2001
 From: Peter Hilber <quic_philber@quicinc.com>
 Date: Fri, 9 May 2025 18:07:24 +0200
 Subject: [PATCH 28/30] virtio_rtc: Add Arm Generic Timer cross-timestamping
@@ -21,7 +21,7 @@ Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
  create mode 100644 drivers/virtio/virtio_rtc_arm.c
 
 diff --git a/drivers/virtio/Kconfig b/drivers/virtio/Kconfig
-index c98e43a1ee95..57beef80dcc5 100644
+index c98e43a1e..57beef80d 100644
 --- a/drivers/virtio/Kconfig
 +++ b/drivers/virtio/Kconfig
 @@ -221,6 +221,19 @@ config VIRTIO_RTC_PTP
@@ -45,7 +45,7 @@ index c98e43a1ee95..57beef80dcc5 100644
  
  endif # VIRTIO_MENU
 diff --git a/drivers/virtio/Makefile b/drivers/virtio/Makefile
-index 88d6fb8d4731..dbd77f124ba9 100644
+index 88d6fb8d4..dbd77f124 100644
 --- a/drivers/virtio/Makefile
 +++ b/drivers/virtio/Makefile
 @@ -17,3 +17,4 @@ obj-$(CONFIG_VIRTIO_DEBUG) += virtio_debug.o
@@ -55,7 +55,7 @@ index 88d6fb8d4731..dbd77f124ba9 100644
 +virtio_rtc-$(CONFIG_VIRTIO_RTC_ARM) += virtio_rtc_arm.o
 diff --git a/drivers/virtio/virtio_rtc_arm.c b/drivers/virtio/virtio_rtc_arm.c
 new file mode 100644
-index 000000000000..211299d72870
+index 000000000..211299d72
 --- /dev/null
 +++ b/drivers/virtio/virtio_rtc_arm.c
 @@ -0,0 +1,23 @@

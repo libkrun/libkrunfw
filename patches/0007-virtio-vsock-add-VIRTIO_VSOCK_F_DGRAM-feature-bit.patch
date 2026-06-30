@@ -1,4 +1,4 @@
-From afc5971d193d97700ad23b13287fcbcf3c0d2e4a Mon Sep 17 00:00:00 2001
+From 087024177b57e8bc30d2f4b4caa4947244692043 Mon Sep 17 00:00:00 2001
 From: Bobby Eshleman <bobby.eshleman () bytedance ! com>
 Date: Sat, 10 Jun 2023 00:58:32 +0000
 Subject: [PATCH 07/30] virtio/vsock: add VIRTIO_VSOCK_F_DGRAM feature bit
@@ -12,7 +12,7 @@ Signed-off-by: Bobby Eshleman <bobby.eshleman@bytedance.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/include/uapi/linux/virtio_vsock.h b/include/uapi/linux/virtio_vsock.h
-index 64738838bee5..9c25f267bbc0 100644
+index 64738838b..9c25f267b 100644
 --- a/include/uapi/linux/virtio_vsock.h
 +++ b/include/uapi/linux/virtio_vsock.h
 @@ -40,6 +40,7 @@

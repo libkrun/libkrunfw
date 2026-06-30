@@ -1,4 +1,4 @@
-From 5d876db7ea5379b0cc6673a02ce8095b804a0e66 Mon Sep 17 00:00:00 2001
+From d8eb6db03394c21b996f22f1f834775d238dcbcb Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Sun, 18 Jan 2026 23:37:30 +0100
 Subject: [PATCH 24/30] fuse: mark DAX inode releases as blocking
@@ -51,7 +51,7 @@ Signed-off-by: Sergio Lopez <slp@redhat.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 23afaadd5f3e..e59a08c71f12 100644
+index 23afaadd5..e59a08c71 100644
 --- a/fs/fuse/file.c
 +++ b/fs/fuse/file.c
 @@ -116,6 +116,12 @@ static void fuse_file_put(struct fuse_file *ff, bool sync)

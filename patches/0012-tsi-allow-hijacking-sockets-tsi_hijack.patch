@@ -1,4 +1,4 @@
-From 74fbbeb0dcc7e3eb2281b2f10f5ddb3aaa658287 Mon Sep 17 00:00:00 2001
+From f1936d33e111997a5d3d2ccea2cecf17328f18df Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Thu, 19 May 2022 22:42:01 +0200
 Subject: [PATCH 12/30] tsi: allow hijacking sockets (tsi_hijack)
@@ -15,7 +15,7 @@ Signed-off-by: Sergio Lopez <slp@redhat.com>
  2 files changed, 29 insertions(+), 1 deletion(-)
 
 diff --git a/net/socket.c b/net/socket.c
-index a55927134851..a355cbd6ba1e 100644
+index a55927134..a355cbd6b 100644
 --- a/net/socket.c
 +++ b/net/socket.c
 @@ -115,6 +115,11 @@ unsigned int sysctl_net_busy_read __read_mostly;
@@ -68,10 +68,10 @@ index a55927134851..a355cbd6ba1e 100644
  	pf = rcu_dereference(net_families[family]);
  	err = -EAFNOSUPPORT;
 diff --git a/net/tsi/af_tsi.c b/net/tsi/af_tsi.c
-index 3d2bcd8d2ba4..bd3dc75b3129 100644
+index 50112f21c..7f5537e46 100644
 --- a/net/tsi/af_tsi.c
 +++ b/net/tsi/af_tsi.c
-@@ -547,7 +547,7 @@ static int tsi_accept(struct socket *sock, struct socket *newsock,
+@@ -555,7 +555,7 @@ static int tsi_accept(struct socket *sock, struct socket *newsock,
  	struct socket *csocket;
  	struct tsi_sock *tsk;
  	struct tsi_sock *newtsk;

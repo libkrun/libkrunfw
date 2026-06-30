@@ -1,4 +1,4 @@
-From 10ae66b1024db238899ccce1f790620ab5c92aa9 Mon Sep 17 00:00:00 2001
+From 8f5cfa9cb869b732453c0157eb0e6829068adc12 Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Thu, 2 Mar 2023 07:34:49 +0100
 Subject: [PATCH 01/30] krunfw: Don't panic when init dies
@@ -16,7 +16,7 @@ Signed-off-by: Sergio Lopez <slp@redhat.com>
  2 files changed, 8 insertions(+)
 
 diff --git a/kernel/exit.c b/kernel/exit.c
-index b91124b2d334..b78ea85c953a 100644
+index b91124b2d..b78ea85c9 100644
 --- a/kernel/exit.c
 +++ b/kernel/exit.c
 @@ -69,6 +69,8 @@
@@ -42,7 +42,7 @@ index b91124b2d334..b78ea85c953a 100644
  #ifdef CONFIG_POSIX_TIMERS
  		hrtimer_cancel(&tsk->signal->real_timer);
 diff --git a/kernel/reboot.c b/kernel/reboot.c
-index d6ee090eda94..f6947c5bd671 100644
+index d6ee090ed..f6947c5bd 100644
 --- a/kernel/reboot.c
 +++ b/kernel/reboot.c
 @@ -278,10 +278,12 @@ void kernel_restart(char *cmd)
