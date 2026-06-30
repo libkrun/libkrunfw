@@ -1,4 +1,4 @@
-From 12d2d822791bdd3a87e717221c488f5f38ccd102 Mon Sep 17 00:00:00 2001
+From 93a2b9ae1e27b9103ec574fc0389170c45c29908 Mon Sep 17 00:00:00 2001
 From: Peter Hilber <quic_philber@quicinc.com>
 Date: Fri, 9 May 2025 18:07:25 +0200
 Subject: [PATCH 29/30] virtio_rtc: Add RTC class driver
@@ -55,7 +55,7 @@ Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
  create mode 100644 drivers/virtio/virtio_rtc_class.c
 
 diff --git a/drivers/virtio/Kconfig b/drivers/virtio/Kconfig
-index 57beef80dcc5..8279d6d5a1f1 100644
+index 57beef80d..8279d6d5a 100644
 --- a/drivers/virtio/Kconfig
 +++ b/drivers/virtio/Kconfig
 @@ -195,7 +195,8 @@ config VIRTIO_RTC
@@ -102,7 +102,7 @@ index 57beef80dcc5..8279d6d5a1f1 100644
  
  endif # VIRTIO_MENU
 diff --git a/drivers/virtio/Makefile b/drivers/virtio/Makefile
-index dbd77f124ba9..eefcfe90d6b8 100644
+index dbd77f124..eefcfe90d 100644
 --- a/drivers/virtio/Makefile
 +++ b/drivers/virtio/Makefile
 @@ -18,3 +18,4 @@ obj-$(CONFIG_VIRTIO_RTC) += virtio_rtc.o
@@ -112,7 +112,7 @@ index dbd77f124ba9..eefcfe90d6b8 100644
 +virtio_rtc-$(CONFIG_VIRTIO_RTC_CLASS) += virtio_rtc_class.o
 diff --git a/drivers/virtio/virtio_rtc_class.c b/drivers/virtio/virtio_rtc_class.c
 new file mode 100644
-index 000000000000..05d6d28255cf
+index 000000000..05d6d2825
 --- /dev/null
 +++ b/drivers/virtio/virtio_rtc_class.c
 @@ -0,0 +1,262 @@
@@ -379,7 +379,7 @@ index 000000000000..05d6d28255cf
 +	return viortc_class;
 +}
 diff --git a/drivers/virtio/virtio_rtc_driver.c b/drivers/virtio/virtio_rtc_driver.c
-index 7499908ee34c..a57d5e06e19d 100644
+index 7499908ee..a57d5e06e 100644
 --- a/drivers/virtio/virtio_rtc_driver.c
 +++ b/drivers/virtio/virtio_rtc_driver.c
 @@ -18,9 +18,12 @@
@@ -1068,7 +1068,7 @@ index 7499908ee34c..a57d5e06e19d 100644
  	.probe = viortc_probe,
  	.remove = viortc_remove,
 diff --git a/drivers/virtio/virtio_rtc_internal.h b/drivers/virtio/virtio_rtc_internal.h
-index 2e589903d04f..296afee6719b 100644
+index 2e589903d..296afee67 100644
 --- a/drivers/virtio/virtio_rtc_internal.h
 +++ b/drivers/virtio/virtio_rtc_internal.h
 @@ -9,6 +9,8 @@
@@ -1143,7 +1143,7 @@ index 2e589903d04f..296afee6719b 100644
 +
  #endif /* _VIRTIO_RTC_INTERNAL_H_ */
 diff --git a/include/uapi/linux/virtio_rtc.h b/include/uapi/linux/virtio_rtc.h
-index 6b3af4e9bbfb..85ee8f013661 100644
+index 6b3af4e9b..85ee8f013 100644
 --- a/include/uapi/linux/virtio_rtc.h
 +++ b/include/uapi/linux/virtio_rtc.h
 @@ -9,6 +9,9 @@

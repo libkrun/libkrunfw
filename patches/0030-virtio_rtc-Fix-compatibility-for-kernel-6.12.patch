@@ -1,4 +1,4 @@
-From 39efc8beac63269f7f0dc556fcca095ffd1415bb Mon Sep 17 00:00:00 2001
+From 6bfd41afdbce866e2092112830227dde503046c2 Mon Sep 17 00:00:00 2001
 From: Dorinda Bassey <dbassey@redhat.com>
 Date: Wed, 29 Apr 2026 11:35:00 +0200
 Subject: [PATCH 30/30] virtio_rtc: Fix compatibility for kernel 6.12
@@ -17,7 +17,7 @@ Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/virtio/virtio_rtc_driver.c b/drivers/virtio/virtio_rtc_driver.c
-index a57d5e06e19d..bc303c32dab3 100644
+index a57d5e06e..bc303c32d 100644
 --- a/drivers/virtio/virtio_rtc_driver.c
 +++ b/drivers/virtio/virtio_rtc_driver.c
 @@ -575,7 +575,7 @@ static int viortc_msg_xfer(struct viortc_vq *vq, struct viortc_msg *msg,

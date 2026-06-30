@@ -1,4 +1,4 @@
-From 9bf460694c54290ee95eb4282ad4d2a5e44b2fe6 Mon Sep 17 00:00:00 2001
+From f5b03965078d2525b68fbdaadcd01b1ce3733486 Mon Sep 17 00:00:00 2001
 From: Sasha Finkelstein <fnkl.kernel@gmail.com>
 Date: Fri, 17 Jan 2025 12:34:23 +0100
 Subject: [PATCH 22/30] virtgpu: gem partial map
@@ -11,7 +11,7 @@ Signed-off-by: Sasha Finkelstein <fnkl.kernel@gmail.com>
  1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/virtio/virtgpu_vram.c b/drivers/gpu/drm/virtio/virtgpu_vram.c
-index 25df81c02783..64e2c6dbdd67 100644
+index 25df81c02..64e2c6dbd 100644
 --- a/drivers/gpu/drm/virtio/virtgpu_vram.c
 +++ b/drivers/gpu/drm/virtio/virtgpu_vram.c
 @@ -56,12 +56,11 @@ static int virtio_gpu_vram_mmap(struct drm_gem_object *obj,

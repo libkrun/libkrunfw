@@ -1,4 +1,4 @@
-From 7931cf4e2ebc6bd096ae5d3a891e1afa47ec3e35 Mon Sep 17 00:00:00 2001
+From bf409cc86fea664719abc2db0ae9786b253980a8 Mon Sep 17 00:00:00 2001
 From: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
 Date: Fri, 8 May 2026 14:23:37 +0200
 Subject: [PATCH 25/30] can: virtio: Add virtio CAN driver
@@ -36,7 +36,7 @@ Signed-off-by: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
  create mode 100644 include/uapi/linux/virtio_can.h
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index d765c62c80ea..9ecb818f7ddb 100644
+index d765c62c8..9ecb818f7 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
 @@ -24464,6 +24464,15 @@ F:	drivers/scsi/virtio_scsi.c
@@ -56,7 +56,7 @@ index d765c62c80ea..9ecb818f7ddb 100644
  M:	Amit Shah <amit@kernel.org>
  L:	virtualization@lists.linux.dev
 diff --git a/drivers/net/can/Kconfig b/drivers/net/can/Kconfig
-index cf989bea9aa3..851749f76d7c 100644
+index cf989bea9..851749f76 100644
 --- a/drivers/net/can/Kconfig
 +++ b/drivers/net/can/Kconfig
 @@ -208,6 +208,18 @@ config CAN_TI_HECC
@@ -79,7 +79,7 @@ index cf989bea9aa3..851749f76d7c 100644
  	tristate "Xilinx CAN"
  	depends on ARCH_ZYNQ || ARM64 || MICROBLAZE || COMPILE_TEST
 diff --git a/drivers/net/can/Makefile b/drivers/net/can/Makefile
-index a71db2cfe990..ddfe0df9b10b 100644
+index a71db2cfe..ddfe0df9b 100644
 --- a/drivers/net/can/Makefile
 +++ b/drivers/net/can/Makefile
 @@ -32,6 +32,7 @@ obj-$(CONFIG_CAN_PEAK_PCIEFD)	+= peak_canfd/
@@ -92,7 +92,7 @@ index a71db2cfe990..ddfe0df9b10b 100644
  subdir-ccflags-$(CONFIG_CAN_DEBUG_DEVICES) += -DDEBUG
 diff --git a/drivers/net/can/virtio_can.c b/drivers/net/can/virtio_can.c
 new file mode 100644
-index 000000000000..0344dd03bd82
+index 000000000..0344dd03b
 --- /dev/null
 +++ b/drivers/net/can/virtio_can.c
 @@ -0,0 +1,991 @@
@@ -1089,7 +1089,7 @@ index 000000000000..0344dd03bd82
 +MODULE_DESCRIPTION("CAN bus driver for Virtio CAN controller");
 diff --git a/include/uapi/linux/virtio_can.h b/include/uapi/linux/virtio_can.h
 new file mode 100644
-index 000000000000..08d7e3e78776
+index 000000000..08d7e3e78
 --- /dev/null
 +++ b/include/uapi/linux/virtio_can.h
 @@ -0,0 +1,78 @@
