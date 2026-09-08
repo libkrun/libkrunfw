@@ -1,7 +1,7 @@
-From 6ec974c7d185814ca12661e8081dcd4cb4ae179b Mon Sep 17 00:00:00 2001
+From 3c2901379d8789be51b75a04fb99ded75d988667 Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Thu, 19 May 2022 22:38:26 +0200
-Subject: [PATCH 11/30] Transparent Socket Impersonation implementation
+Subject: [PATCH 11/36] Transparent Socket Impersonation implementation
 
 Transparent Socket Impersonation (AF_TSI) is an address family that
 provides sockets presenting two simultaneous personalities, one of
@@ -90,7 +90,7 @@ index 65bb8c72a35e..c1db937f3212 100644
  obj-$(CONFIG_NET_HANDSHAKE)	+= handshake/
 +obj-$(CONFIG_TSI)		+= tsi/
 diff --git a/net/socket.c b/net/socket.c
-index 878155076bc0..a55927134851 100644
+index 723bc3a1ba5c..27c1bf6c9aa9 100644
 --- a/net/socket.c
 +++ b/net/socket.c
 @@ -217,6 +217,9 @@ static const char * const pf_family_names[] = {
@@ -1823,7 +1823,7 @@ index 000000000000..b74966fd7ae3
 +
 +#endif
 diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 8e31d3b60fc6..aae3267fa9ee 100644
+index cd60ece2fd58..6e345bfd8fc2 100644
 --- a/security/selinux/hooks.c
 +++ b/security/selinux/hooks.c
 @@ -1302,7 +1302,13 @@ static inline u16 socket_type_to_security_class(int family, int type, int protoc
@@ -1862,5 +1862,5 @@ index 7229c9bf6c27..f08d24321603 100644
  #error New address family defined, please update secclass_map.
  #endif
 -- 
-2.54.0
+2.55.0
 

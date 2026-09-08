@@ -1,7 +1,7 @@
-From c3b36d4d123ef1e99b504ebb4eac2f46bf3e9da3 Mon Sep 17 00:00:00 2001
+From c30236a930949a21bb9be1820d2b14011eee64a8 Mon Sep 17 00:00:00 2001
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 Date: Sat, 7 Oct 2023 22:47:47 +0300
-Subject: [PATCH 18/30] drm/virtio: Support fence-passing feature
+Subject: [PATCH 18/36] drm/virtio: Support fence-passing feature
 
 Support extended version of VIRTIO_GPU_CMD_SUBMIT_3D command that allows
 passing in-fence IDs to host for waiting, removing need to do expensive
@@ -36,10 +36,10 @@ Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
  9 files changed, 152 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.c b/drivers/gpu/drm/virtio/virtgpu_drv.c
-index e5a2665e50ea..33b471dfe098 100644
+index 44d99e89bb9b..4ec7f4ea3ac4 100644
 --- a/drivers/gpu/drm/virtio/virtgpu_drv.c
 +++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
-@@ -149,6 +149,7 @@ static unsigned int features[] = {
+@@ -152,6 +152,7 @@ static unsigned int features[] = {
  	VIRTIO_GPU_F_RESOURCE_UUID,
  	VIRTIO_GPU_F_RESOURCE_BLOB,
  	VIRTIO_GPU_F_CONTEXT_INIT,
@@ -48,7 +48,7 @@ index e5a2665e50ea..33b471dfe098 100644
  static struct virtio_driver virtio_gpu_driver = {
  	.feature_table = features,
 diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.h b/drivers/gpu/drm/virtio/virtgpu_drv.h
-index 5dc8eeaf7123..50d8bbd01bc4 100644
+index ca0f7dcc99a2..d360cdf419e8 100644
 --- a/drivers/gpu/drm/virtio/virtgpu_drv.h
 +++ b/drivers/gpu/drm/virtio/virtgpu_drv.h
 @@ -152,6 +152,7 @@ struct virtio_gpu_fence {
@@ -75,7 +75,7 @@ index 5dc8eeaf7123..50d8bbd01bc4 100644
  	struct mutex context_lock;
  	char debug_name[DEBUG_NAME_MAX_LEN];
  	bool explicit_debug_name;
-@@ -379,7 +382,9 @@ void virtio_gpu_cmd_submit(struct virtio_gpu_device *vgdev,
+@@ -380,7 +383,9 @@ void virtio_gpu_cmd_submit(struct virtio_gpu_device *vgdev,
  			   void *data, uint32_t data_size,
  			   uint32_t ctx_id,
  			   struct virtio_gpu_object_array *objs,
@@ -86,7 +86,7 @@ index 5dc8eeaf7123..50d8bbd01bc4 100644
  void virtio_gpu_cmd_transfer_from_host_3d(struct virtio_gpu_device *vgdev,
  					  uint32_t ctx_id,
  					  uint64_t offset, uint32_t level,
-@@ -432,6 +437,9 @@ virtio_gpu_cmd_set_scanout_blob(struct virtio_gpu_device *vgdev,
+@@ -433,6 +438,9 @@ virtio_gpu_cmd_set_scanout_blob(struct virtio_gpu_device *vgdev,
  				uint32_t width, uint32_t height,
  				uint32_t x, uint32_t y);
  
@@ -96,7 +96,7 @@ index 5dc8eeaf7123..50d8bbd01bc4 100644
  /* virtgpu_display.c */
  int virtio_gpu_modeset_init(struct virtio_gpu_device *vgdev);
  void virtio_gpu_modeset_fini(struct virtio_gpu_device *vgdev);
-@@ -451,6 +459,7 @@ void virtio_gpu_fence_emit(struct virtio_gpu_device *vgdev,
+@@ -452,6 +460,7 @@ void virtio_gpu_fence_emit(struct virtio_gpu_device *vgdev,
  			  struct virtio_gpu_fence *fence);
  void virtio_gpu_fence_event_process(struct virtio_gpu_device *vdev,
  				    u64 fence_id);
@@ -174,10 +174,10 @@ index e4f76f315550..894f3fd14c51 100644
  			ret = -EINVAL;
  			goto out_unlock;
 diff --git a/drivers/gpu/drm/virtio/virtgpu_kms.c b/drivers/gpu/drm/virtio/virtgpu_kms.c
-index 7dfb2006c561..fa4e5542fe5b 100644
+index ec31a41d33d6..14e0886ca96e 100644
 --- a/drivers/gpu/drm/virtio/virtgpu_kms.c
 +++ b/drivers/gpu/drm/virtio/virtgpu_kms.c
-@@ -196,12 +196,16 @@ int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev)
+@@ -199,12 +199,16 @@ int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev)
  	if (virtio_has_feature(vgdev->vdev, VIRTIO_GPU_F_CONTEXT_INIT)) {
  		vgdev->has_context_init = true;
  	}
@@ -197,7 +197,7 @@ index 7dfb2006c561..fa4e5542fe5b 100644
  	DRM_INFO("features: %ccontext_init\n",
  		 vgdev->has_context_init ? '+' : '-');
 diff --git a/drivers/gpu/drm/virtio/virtgpu_submit.c b/drivers/gpu/drm/virtio/virtgpu_submit.c
-index 7d34cf83f5f2..136ca6238ab0 100644
+index 409ecdb0d680..db3642591028 100644
 --- a/drivers/gpu/drm/virtio/virtgpu_submit.c
 +++ b/drivers/gpu/drm/virtio/virtgpu_submit.c
 @@ -25,6 +25,11 @@ struct virtio_gpu_submit_post_dep {
@@ -276,7 +276,7 @@ index 7d34cf83f5f2..136ca6238ab0 100644
  	return dma_fence_wait(in_fence, true);
  }
  
-@@ -331,6 +374,7 @@ static void virtio_gpu_cleanup_submit(struct virtio_gpu_submit *submit)
+@@ -333,6 +376,7 @@ static void virtio_gpu_cleanup_submit(struct virtio_gpu_submit *submit)
  	virtio_gpu_reset_syncobjs(submit->in_syncobjs, submit->num_in_syncobjs);
  	virtio_gpu_free_syncobjs(submit->in_syncobjs, submit->num_in_syncobjs);
  	virtio_gpu_free_post_deps(submit->post_deps, submit->num_out_syncobjs);
@@ -284,14 +284,13 @@ index 7d34cf83f5f2..136ca6238ab0 100644
  
  	if (!IS_ERR(submit->buf))
  		kvfree(submit->buf);
-@@ -348,12 +392,51 @@ static void virtio_gpu_cleanup_submit(struct virtio_gpu_submit *submit)
+@@ -350,12 +394,51 @@ static void virtio_gpu_cleanup_submit(struct virtio_gpu_submit *submit)
  		fput(submit->sync_file->file);
  }
  
 -static void virtio_gpu_submit(struct virtio_gpu_submit *submit)
 +static int virtio_gpu_attach_in_fences(struct virtio_gpu_submit *submit)
- {
--	virtio_gpu_cmd_submit(submit->vgdev, submit->buf, submit->exbuf->size,
++{
 +	size_t in_fences_size = sizeof(u64) * submit->num_in_fences;
 +	size_t new_data_size = submit->data_size + in_fences_size;
 +	void *buf = submit->buf;
@@ -318,7 +317,8 @@ index 7d34cf83f5f2..136ca6238ab0 100644
 +}
 +
 +static int virtio_gpu_submit(struct virtio_gpu_submit *submit)
-+{
+ {
+-	virtio_gpu_cmd_submit(submit->vgdev, submit->buf, submit->exbuf->size,
 +	int err;
 +
 +	if (submit->num_in_fences) {
@@ -339,7 +339,7 @@ index 7d34cf83f5f2..136ca6238ab0 100644
  }
  
  static void virtio_gpu_complete_submit(struct virtio_gpu_submit *submit)
-@@ -400,6 +483,12 @@ static int virtio_gpu_init_submit(struct virtio_gpu_submit *submit,
+@@ -402,6 +485,12 @@ static int virtio_gpu_init_submit(struct virtio_gpu_submit *submit,
  		}
  	}
  
@@ -352,7 +352,7 @@ index 7d34cf83f5f2..136ca6238ab0 100644
  	submit->out_fence = out_fence;
  	submit->fence_ctx = fence_ctx;
  	submit->ring_idx = ring_idx;
-@@ -526,7 +615,9 @@ int virtio_gpu_execbuffer_ioctl(struct drm_device *dev, void *data,
+@@ -528,7 +617,9 @@ int virtio_gpu_execbuffer_ioctl(struct drm_device *dev, void *data,
  	if (ret)
  		goto cleanup;
  
@@ -364,10 +364,10 @@ index 7d34cf83f5f2..136ca6238ab0 100644
  	/*
  	 * Set up user-out data after submitting the job to optimize
 diff --git a/drivers/gpu/drm/virtio/virtgpu_vq.c b/drivers/gpu/drm/virtio/virtgpu_vq.c
-index 0d3d0d09f39b..96f0a42d313c 100644
+index 4369275cb56b..a870f10136b8 100644
 --- a/drivers/gpu/drm/virtio/virtgpu_vq.c
 +++ b/drivers/gpu/drm/virtio/virtgpu_vq.c
-@@ -1079,7 +1079,9 @@ void virtio_gpu_cmd_submit(struct virtio_gpu_device *vgdev,
+@@ -1077,7 +1077,9 @@ void virtio_gpu_cmd_submit(struct virtio_gpu_device *vgdev,
  			   void *data, uint32_t data_size,
  			   uint32_t ctx_id,
  			   struct virtio_gpu_object_array *objs,
@@ -378,7 +378,7 @@ index 0d3d0d09f39b..96f0a42d313c 100644
  {
  	struct virtio_gpu_cmd_submit *cmd_p;
  	struct virtio_gpu_vbuffer *vbuf;
-@@ -1093,7 +1095,8 @@ void virtio_gpu_cmd_submit(struct virtio_gpu_device *vgdev,
+@@ -1091,7 +1093,8 @@ void virtio_gpu_cmd_submit(struct virtio_gpu_device *vgdev,
  
  	cmd_p->hdr.type = cpu_to_le32(VIRTIO_GPU_CMD_SUBMIT_3D);
  	cmd_p->hdr.ctx_id = cpu_to_le32(ctx_id);
@@ -450,5 +450,5 @@ index bf2c9cabd207..ceb656264aa0 100644
  
  #define VIRTIO_GPU_CAPSET_VIRGL 1
 -- 
-2.54.0
+2.55.0
 

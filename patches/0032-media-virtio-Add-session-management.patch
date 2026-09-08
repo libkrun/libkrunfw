@@ -1,8 +1,33 @@
+From 9be49fb32b4aeb6e45f214f6443b9cf083d4910b Mon Sep 17 00:00:00 2001
+From: Brian Daniels <briandaniels@google.com>
+Date: Tue, 8 Sep 2026 10:44:39 +0200
+Subject: [PATCH 32/36] media: virtio: Add session management
+
+From: Alexandre Courbot <gnurou@gmail.com>
+
+This patch adds session management to the virtio-media driver.
+A session is created when the /dev/videoX device is opened, and
+destroyed when it is closed.
+
+Opening a session sends VIRTIO_MEDIA_CMD_OPEN to the host, and closing
+it sends VIRTIO_MEDIA_CMD_CLOSE.
+
+It adds drivers/media/virtio/session.h and implements the open and
+release fops.
+
+Signed-off-by: Alexandre Courbot <gnurou@gmail.com>
+Assisted-by: Antigravity:gemini-3.5-flash
+Co-developed-by: Brian Daniels <briandaniels@google.com>
+Signed-off-by: Brian Daniels <briandaniels@google.com>
+---
+ drivers/media/virtio/session.h             | 132 +++++
+ drivers/media/virtio/virtio_media_driver.c | 604 ++++++++++++++++++++-
+ 2 files changed, 732 insertions(+), 4 deletions(-)
  create mode 100644 drivers/media/virtio/session.h
 
 diff --git a/drivers/media/virtio/session.h b/drivers/media/virtio/session.h
 new file mode 100644
-index 000000000..d523c8171
+index 000000000000..1b3b2c279055
 --- /dev/null
 +++ b/drivers/media/virtio/session.h
 @@ -0,0 +1,132 @@
@@ -139,7 +164,7 @@ index 000000000..d523c8171
 +
 +#endif // __VIRTIO_MEDIA_SESSION_H
 diff --git a/drivers/media/virtio/virtio_media_driver.c b/drivers/media/virtio/virtio_media_driver.c
-index 25f2ceaa6..ef8065e34 100644
+index 25f2ceaa6c48..ef8065e34492 100644
 --- a/drivers/media/virtio/virtio_media_driver.c
 +++ b/drivers/media/virtio/virtio_media_driver.c
 @@ -14,25 +14,589 @@
@@ -812,6 +837,5 @@ index 25f2ceaa6..ef8065e34 100644
  
  static struct virtio_device_id id_table[] = {
 -- 
-2.55.0.897.gb25b4bd76c-goog
-
+2.55.0
 

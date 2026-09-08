@@ -1,7 +1,7 @@
-From d72b2bc30adfd622d8e742088d5012fcb3dd2204 Mon Sep 17 00:00:00 2001
+From 0d1373e19040b82a50d9c81fe42a9a16485c7602 Mon Sep 17 00:00:00 2001
 From: Asahi Lina <lina@asahilina.net>
 Date: Sun, 20 Oct 2024 01:23:41 +0900
-Subject: [PATCH 20/30] dax: Allow block size > PAGE_SIZE
+Subject: [PATCH 20/36] dax: Allow block size > PAGE_SIZE
 
 For virtio-dax, the file/FS blocksize is irrelevant. FUSE always uses
 large DAX blocks (2MiB), which will work with all host page sizes. Since
@@ -35,5 +35,5 @@ index 756400f2a625..cb155ec940d5 100644
  
  	if (mapping_empty(mapping) || wbc->sync_mode != WB_SYNC_ALL)
 -- 
-2.54.0
+2.55.0
 

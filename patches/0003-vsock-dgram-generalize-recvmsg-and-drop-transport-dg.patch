@@ -1,7 +1,7 @@
-From 72bd47b54d947e297cf4298b8da2cdfc59215135 Mon Sep 17 00:00:00 2001
+From 7d78c03e4d008b83e0262ee1af5c54515c0df711 Mon Sep 17 00:00:00 2001
 From: Bobby Eshleman <bobby.eshleman () bytedance ! com>
 Date: Sat, 10 Jun 2023 00:58:28 +0000
-Subject: [PATCH 03/30] vsock/dgram: generalize recvmsg and drop
+Subject: [PATCH 03/36] vsock/dgram: generalize recvmsg and drop
  transport->dgram_dequeue
 
 This commit drops the transport->dgram_dequeue callback and makes
@@ -81,10 +81,10 @@ index 70302c92d329..9ba6e2bcef94 100644
  	/* STREAM. */
  	/* TODO: stream_bind() */
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 1db7a1f8e55f..460c9893e112 100644
+index f03e00cae028..e75651c04f5d 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
-@@ -1359,10 +1359,62 @@ static int vsock_dgram_connect(struct socket *sock,
+@@ -1374,10 +1374,62 @@ static int vsock_dgram_connect(struct socket *sock,
  int __vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
  			  size_t len, int flags)
  {
@@ -151,7 +151,7 @@ index 1db7a1f8e55f..460c9893e112 100644
  
  int vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
 diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
-index 34871ed1a099..0746f7fb2809 100644
+index 865e004ee286..5564c0e11d74 100644
 --- a/net/vmw_vsock/hyperv_transport.c
 +++ b/net/vmw_vsock/hyperv_transport.c
 @@ -557,8 +557,17 @@ static int hvs_dgram_bind(struct vsock_sock *vsk, struct sockaddr_vm *addr)
@@ -174,7 +174,7 @@ index 34871ed1a099..0746f7fb2809 100644
  {
  	return -EOPNOTSUPP;
  }
-@@ -834,7 +843,9 @@ static struct vsock_transport hvs_transport = {
+@@ -837,7 +846,9 @@ static struct vsock_transport hvs_transport = {
  	.shutdown                 = hvs_shutdown,
  
  	.dgram_bind               = hvs_dgram_bind,
@@ -186,10 +186,10 @@ index 34871ed1a099..0746f7fb2809 100644
  	.dgram_allow              = hvs_dgram_allow,
  
 diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index b6569b0ca2bb..d1107b65445e 100644
+index 4bc00425d172..7fcadea4b5cf 100644
 --- a/net/vmw_vsock/virtio_transport.c
 +++ b/net/vmw_vsock/virtio_transport.c
-@@ -552,9 +552,11 @@ static struct virtio_transport virtio_transport = {
+@@ -553,9 +553,11 @@ static struct virtio_transport virtio_transport = {
  		.cancel_pkt               = virtio_transport_cancel_pkt,
  
  		.dgram_bind               = virtio_transport_dgram_bind,
@@ -203,10 +203,10 @@ index b6569b0ca2bb..d1107b65445e 100644
  		.stream_dequeue           = virtio_transport_stream_dequeue,
  		.stream_enqueue           = virtio_transport_stream_enqueue,
 diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 9550773fe1e1..f5f61f87da83 100644
+index 39584992c6c8..d2340f6139e1 100644
 --- a/net/vmw_vsock/virtio_transport_common.c
 +++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1053,6 +1053,24 @@ int virtio_transport_dgram_bind(struct vsock_sock *vsk,
+@@ -1204,6 +1204,24 @@ int virtio_transport_dgram_bind(struct vsock_sock *vsk,
  }
  EXPORT_SYMBOL_GPL(virtio_transport_dgram_bind);
  
@@ -232,10 +232,10 @@ index 9550773fe1e1..f5f61f87da83 100644
  {
  	return false;
 diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
-index aca3132689cf..956109393596 100644
+index 75bf643ff6fa..a203166f3620 100644
 --- a/net/vmw_vsock/vmci_transport.c
 +++ b/net/vmw_vsock/vmci_transport.c
-@@ -1731,57 +1731,40 @@ static int vmci_transport_dgram_enqueue(
+@@ -1735,57 +1735,40 @@ static int vmci_transport_dgram_enqueue(
  	return err - sizeof(*dg);
  }
  
@@ -316,7 +316,7 @@ index aca3132689cf..956109393596 100644
  }
  
  static bool vmci_transport_dgram_allow(u32 cid, u32 port)
-@@ -2040,9 +2023,12 @@ static struct vsock_transport vmci_transport = {
+@@ -2044,9 +2027,12 @@ static struct vsock_transport vmci_transport = {
  	.release = vmci_transport_release,
  	.connect = vmci_transport_connect,
  	.dgram_bind = vmci_transport_dgram_bind,
@@ -348,5 +348,5 @@ index 6e78927a598e..3d5e05d8950f 100644
  		.stream_dequeue           = virtio_transport_stream_dequeue,
  		.stream_enqueue           = virtio_transport_stream_enqueue,
 -- 
-2.54.0
+2.55.0
 

@@ -1,7 +1,7 @@
-From 5d876db7ea5379b0cc6673a02ce8095b804a0e66 Mon Sep 17 00:00:00 2001
+From f26b563f493d2cb211a6e8ef9824da3cb1274bec Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Sun, 18 Jan 2026 23:37:30 +0100
-Subject: [PATCH 24/30] fuse: mark DAX inode releases as blocking
+Subject: [PATCH 24/36] fuse: mark DAX inode releases as blocking
 
 Commit 26e5c67deb2e ("fuse: fix livelock in synchronous file put from
 fuseblk workers") made fputs on closing files always asynchronous.
@@ -51,7 +51,7 @@ Signed-off-by: Sergio Lopez <slp@redhat.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 23afaadd5f3e..e59a08c71f12 100644
+index a03ebfc55ee0..3e0e3eb770ed 100644
 --- a/fs/fuse/file.c
 +++ b/fs/fuse/file.c
 @@ -116,6 +116,12 @@ static void fuse_file_put(struct fuse_file *ff, bool sync)
@@ -68,5 +68,5 @@ index 23afaadd5f3e..e59a08c71f12 100644
  			if (fuse_simple_background(ff->fm, args,
  						   GFP_KERNEL | __GFP_NOFAIL))
 -- 
-2.54.0
+2.55.0
 

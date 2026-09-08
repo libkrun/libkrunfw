@@ -1,4 +1,29 @@
-index 8290d8506..f1bc8a3ce 100644
+From 38ef95306de88ccc689e06500088d18d83fbbd6d Mon Sep 17 00:00:00 2001
+From: Brian Daniels <briandaniels@google.com>
+Date: Tue, 8 Sep 2026 10:49:26 +0200
+Subject: [PATCH 34/36] media: virtio: Add ioctl operations and driver logic
+
+From: Alexandre Courbot <gnurou@gmail.com>
+
+This patch adds the ioctl operations and the remaining driver logic
+for polling and mmapping.
+
+It adds drivers/media/virtio/virtio_media_ioctls.c and updates
+virtio_media_driver.c to support poll, mmap, and ioctls.
+
+Signed-off-by: Alexandre Courbot <gnurou@gmail.com>
+Assisted-by: Antigravity:gemini-3.5-flash
+Co-developed-by: Brian Daniels <briandaniels@google.com>
+Signed-off-by: Brian Daniels <briandaniels@google.com>
+---
+ drivers/media/virtio/Makefile              |    2 +-
+ drivers/media/virtio/virtio_media_driver.c |  195 +++
+ drivers/media/virtio/virtio_media_ioctls.c | 1319 ++++++++++++++++++++
+ 3 files changed, 1515 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/media/virtio/virtio_media_ioctls.c
+
+diff --git a/drivers/media/virtio/Makefile b/drivers/media/virtio/Makefile
+index 8290d8506248..f1bc8a3cee69 100644
 --- a/drivers/media/virtio/Makefile
 +++ b/drivers/media/virtio/Makefile
 @@ -2,6 +2,6 @@
@@ -10,7 +35,7 @@ index 8290d8506..f1bc8a3ce 100644
  
  obj-$(CONFIG_MEDIA_VIRTIO) += virtio-media.o
 diff --git a/drivers/media/virtio/virtio_media_driver.c b/drivers/media/virtio/virtio_media_driver.c
-index ef8065e34..5840bb349 100644
+index ef8065e34492..5840bb34972f 100644
 --- a/drivers/media/virtio/virtio_media_driver.c
 +++ b/drivers/media/virtio/virtio_media_driver.c
 @@ -6,6 +6,7 @@
@@ -252,7 +277,7 @@ index ef8065e34..5840bb349 100644
  	strscpy(vd->name, "virtio-media", sizeof(vd->name));
 diff --git a/drivers/media/virtio/virtio_media_ioctls.c b/drivers/media/virtio/virtio_media_ioctls.c
 new file mode 100644
-index 000000000..f0b82b5ec
+index 000000000000..f0b82b5ec7b4
 --- /dev/null
 +++ b/drivers/media/virtio/virtio_media_ioctls.c
 @@ -0,0 +1,1319 @@
@@ -1576,6 +1601,5 @@ index 000000000..f0b82b5ec
 +	return ret;
 +}
 -- 
-2.55.0.897.gb25b4bd76c-goog
-
+2.55.0
 

@@ -1,7 +1,7 @@
-From ecb8b27ab26a3b2c186fe1b0f0b6297ad57421cd Mon Sep 17 00:00:00 2001
+From efe3e5fc34c3af1fec4e09a27d67caf6851fd1dd Mon Sep 17 00:00:00 2001
 From: Peter Hilber <quic_philber@quicinc.com>
 Date: Fri, 9 May 2025 18:07:22 +0200
-Subject: [PATCH 26/30] virtio_rtc: Add module and driver core
+Subject: [PATCH 26/36] virtio_rtc: Add module and driver core
 
 Add the virtio_rtc module and driver core. The virtio_rtc module implements
 a driver compatible with the proposed Virtio RTC device specification.
@@ -34,10 +34,10 @@ Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
  create mode 100644 include/uapi/linux/virtio_rtc.h
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 9ecb818f7ddb..ebf1a598394c 100644
+index e53aa8538ce3..259b63cee143 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -24620,6 +24620,13 @@ S:	Maintained
+@@ -24625,6 +24625,13 @@ S:	Maintained
  F:	drivers/nvdimm/nd_virtio.c
  F:	drivers/nvdimm/virtio_pmem.c
  
@@ -1063,5 +1063,5 @@ index 000000000000..6b3af4e9bbfb
 +
 +#endif /* _LINUX_VIRTIO_RTC_H */
 -- 
-2.54.0
+2.55.0
 

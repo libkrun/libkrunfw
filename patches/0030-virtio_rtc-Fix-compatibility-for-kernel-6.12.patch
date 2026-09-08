@@ -1,7 +1,7 @@
-From 39efc8beac63269f7f0dc556fcca095ffd1415bb Mon Sep 17 00:00:00 2001
+From 2d8290a9272f96efddd9551c607bf931b0be4030 Mon Sep 17 00:00:00 2001
 From: Dorinda Bassey <dbassey@redhat.com>
 Date: Wed, 29 Apr 2026 11:35:00 +0200
-Subject: [PATCH 30/30] virtio_rtc: Fix compatibility for kernel 6.12
+Subject: [PATCH 30/36] virtio_rtc: Fix compatibility for kernel 6.12
 
 Backport virtio_rtc driver to kernel 6.12 by fixing API differences:
 
@@ -39,5 +39,5 @@ index a57d5e06e19d..bc303c32dab3 100644
  	return viortc_class_register(viortc_class) ?: 1;
  }
 -- 
-2.54.0
+2.55.0
 

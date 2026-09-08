@@ -1,0 +1,27 @@
+From c5e1760189b5bd7818e5a62d978de6203e83fcdc Mon Sep 17 00:00:00 2001
+From: Albert Esteve <aesteve@redhat.com>
+Date: Tue, 10 Mar 2026 09:40:46 +0100
+Subject: [PATCH 35/36] virtio: Add ID for virtio media
+
+Add VIRTIO_ID_MEDIA definition for virtio-media.
+
+Signed-off-by: Albert Esteve <aesteve@redhat.com>
+---
+ include/uapi/linux/virtio_ids.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/uapi/linux/virtio_ids.h b/include/uapi/linux/virtio_ids.h
+index 7aa2eb766205..b4bb0ace0b26 100644
+--- a/include/uapi/linux/virtio_ids.h
++++ b/include/uapi/linux/virtio_ids.h
+@@ -68,6 +68,7 @@
+ #define VIRTIO_ID_AUDIO_POLICY		39 /* virtio audio policy */
+ #define VIRTIO_ID_BT			40 /* virtio bluetooth */
+ #define VIRTIO_ID_GPIO			41 /* virtio gpio */
++#define VIRTIO_ID_MEDIA			48 /* virtio media */
+ 
+ /*
+  * Virtio Transitional IDs
+-- 
+2.55.0
+

@@ -1,5 +1,30 @@
+From 82b5649718b6a1450e68beb1a9e2ca653c90ab5c Mon Sep 17 00:00:00 2001
+From: Brian Daniels <briandaniels@google.com>
+Date: Tue, 8 Sep 2026 10:48:24 +0200
+Subject: [PATCH 33/36] media: virtio: Add scatterlist builder
+
+From: Alexandre Courbot <gnurou@gmail.com>
+
+This patch adds the scatterlist builder, which is used to construct
+scatterlists for virtio commands from V4L2 structures.
+
+It adds drivers/media/virtio/scatterlist_builder.c and
+drivers/media/virtio/scatterlist_builder.h.
+
+Signed-off-by: Alexandre Courbot <gnurou@gmail.com>
+Assisted-by: Antigravity:gemini-3.5-flash
+Co-developed-by: Brian Daniels <briandaniels@google.com>
+Signed-off-by: Brian Daniels <briandaniels@google.com>
+---
+ drivers/media/virtio/Makefile              |   2 +-
+ drivers/media/virtio/scatterlist_builder.c | 515 +++++++++++++++++++++
+ drivers/media/virtio/scatterlist_builder.h | 109 +++++
+ 3 files changed, 625 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/media/virtio/scatterlist_builder.c
+ create mode 100644 drivers/media/virtio/scatterlist_builder.h
+
 diff --git a/drivers/media/virtio/Makefile b/drivers/media/virtio/Makefile
-index 09d9834da..8290d8506 100644
+index 09d9834da5de..8290d8506248 100644
 --- a/drivers/media/virtio/Makefile
 +++ b/drivers/media/virtio/Makefile
 @@ -2,6 +2,6 @@
@@ -12,7 +37,7 @@ index 09d9834da..8290d8506 100644
  obj-$(CONFIG_MEDIA_VIRTIO) += virtio-media.o
 diff --git a/drivers/media/virtio/scatterlist_builder.c b/drivers/media/virtio/scatterlist_builder.c
 new file mode 100644
-index 000000000..97925b277
+index 000000000000..97925b2771ae
 --- /dev/null
 +++ b/drivers/media/virtio/scatterlist_builder.c
 @@ -0,0 +1,515 @@
@@ -533,7 +558,7 @@ index 000000000..97925b277
 +}
 diff --git a/drivers/media/virtio/scatterlist_builder.h b/drivers/media/virtio/scatterlist_builder.h
 new file mode 100644
-index 000000000..47bfd7ae0
+index 000000000000..47bfd7ae0809
 --- /dev/null
 +++ b/drivers/media/virtio/scatterlist_builder.h
 @@ -0,0 +1,109 @@
@@ -647,6 +672,5 @@ index 000000000..47bfd7ae0
 +
 +#endif // __VIRTIO_MEDIA_SCATTERLIST_BUILDER_H
 -- 
-2.55.0.897.gb25b4bd76c-goog
-
+2.55.0
 

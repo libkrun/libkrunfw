@@ -1,7 +1,7 @@
-From 6f8f8b27658ac6345af71dea9ef97850faf704cd Mon Sep 17 00:00:00 2001
+From cb66798255b582838b5dd5d2dee04f039cf7e281 Mon Sep 17 00:00:00 2001
 From: Bobby Eshleman <bobby.eshleman () bytedance ! com>
 Date: Sat, 10 Jun 2023 00:58:30 +0000
-Subject: [PATCH 05/30] vsock: support multi-transport datagrams
+Subject: [PATCH 05/36] vsock: support multi-transport datagrams
 
 This patch adds support for multi-transport datagrams.
 
@@ -82,7 +82,7 @@ index 06d5b15642ae..6c8791d3bc70 100644
  int virtio_transport_dgram_get_cid(struct sk_buff *skb, unsigned int *cid);
  int virtio_transport_dgram_get_port(struct sk_buff *skb, unsigned int *port);
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 8049e3b4f377..9046ea82a37b 100644
+index fa5821c97845..9ea29661b5aa 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
 @@ -448,6 +448,18 @@ vsock_connectible_lookup_transport(unsigned int cid, __u8 flags)
@@ -124,7 +124,7 @@ index 8049e3b4f377..9046ea82a37b 100644
  	return vsk->transport->dgram_bind(vsk, addr);
  }
  
-@@ -1260,19 +1276,24 @@ static int vsock_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
+@@ -1275,19 +1291,24 @@ static int vsock_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
  
  	lock_sock(sk);
  
@@ -156,7 +156,7 @@ index 8049e3b4f377..9046ea82a37b 100644
  		/* Ensure this address is of the right type and is a valid
  		 * destination.
  		 */
-@@ -1281,11 +1302,27 @@ static int vsock_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
+@@ -1296,11 +1317,27 @@ static int vsock_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
  			remote_addr->svm_cid = transport->get_local_cid();
  
  		if (!vsock_addr_bound(remote_addr)) {
@@ -184,7 +184,7 @@ index 8049e3b4f377..9046ea82a37b 100644
  
  		if (remote_addr->svm_cid == VMADDR_CID_ANY)
  			remote_addr->svm_cid = transport->get_local_cid();
-@@ -1293,23 +1330,23 @@ static int vsock_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
+@@ -1308,23 +1345,23 @@ static int vsock_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
  		/* XXX Should connect() or this function ensure remote_addr is
  		 * bound?
  		 */
@@ -217,7 +217,7 @@ index 8049e3b4f377..9046ea82a37b 100644
  out:
  	release_sock(sk);
  	return err;
-@@ -1343,13 +1380,18 @@ static int vsock_dgram_connect(struct socket *sock,
+@@ -1358,13 +1395,18 @@ static int vsock_dgram_connect(struct socket *sock,
  	if (err)
  		goto out;
  
@@ -238,7 +238,7 @@ index 8049e3b4f377..9046ea82a37b 100644
  
  	/* sock map disallows redirection of non-TCP sockets with sk_state !=
 diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
-index 0746f7fb2809..b5822a5ed92f 100644
+index 5564c0e11d74..238b18544e51 100644
 --- a/net/vmw_vsock/hyperv_transport.c
 +++ b/net/vmw_vsock/hyperv_transport.c
 @@ -552,11 +552,6 @@ static void hvs_destruct(struct vsock_sock *vsk)
@@ -253,7 +253,7 @@ index 0746f7fb2809..b5822a5ed92f 100644
  static int hvs_dgram_get_cid(struct sk_buff *skb, unsigned int *cid)
  {
  	return -EOPNOTSUPP;
-@@ -842,7 +837,6 @@ static struct vsock_transport hvs_transport = {
+@@ -845,7 +840,6 @@ static struct vsock_transport hvs_transport = {
  	.connect                  = hvs_connect,
  	.shutdown                 = hvs_shutdown,
  
@@ -262,10 +262,10 @@ index 0746f7fb2809..b5822a5ed92f 100644
  	.dgram_get_port		  = hvs_dgram_get_port,
  	.dgram_get_length	  = hvs_dgram_get_length,
 diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index d1107b65445e..e9828815e741 100644
+index 7fcadea4b5cf..55e9f43c2e90 100644
 --- a/net/vmw_vsock/virtio_transport.c
 +++ b/net/vmw_vsock/virtio_transport.c
-@@ -551,7 +551,6 @@ static struct virtio_transport virtio_transport = {
+@@ -552,7 +552,6 @@ static struct virtio_transport virtio_transport = {
  		.shutdown                 = virtio_transport_shutdown,
  		.cancel_pkt               = virtio_transport_cancel_pkt,
  
@@ -274,10 +274,10 @@ index d1107b65445e..e9828815e741 100644
  		.dgram_allow              = virtio_transport_dgram_allow,
  		.dgram_get_cid		  = virtio_transport_dgram_get_cid,
 diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index f5f61f87da83..3a996272764b 100644
+index d2340f6139e1..27dc34de66ba 100644
 --- a/net/vmw_vsock/virtio_transport_common.c
 +++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1046,13 +1046,6 @@ bool virtio_transport_stream_allow(u32 cid, u32 port)
+@@ -1197,13 +1197,6 @@ bool virtio_transport_stream_allow(u32 cid, u32 port)
  }
  EXPORT_SYMBOL_GPL(virtio_transport_stream_allow);
  
@@ -304,5 +304,5 @@ index 3d5e05d8950f..9e9e124f8d2b 100644
  		.dgram_allow              = virtio_transport_dgram_allow,
  		.dgram_get_cid		  = virtio_transport_dgram_get_cid,
 -- 
-2.54.0
+2.55.0
 
