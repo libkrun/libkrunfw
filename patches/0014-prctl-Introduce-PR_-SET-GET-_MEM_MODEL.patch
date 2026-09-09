@@ -1,4 +1,4 @@
-From 459cc55cfcca8d65239aa8d2f51d210b1b7d9016 Mon Sep 17 00:00:00 2001
+From f50ae28a104babafea6d446a139fcf59d42f7fe3 Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Thu, 11 Apr 2024 09:51:20 +0900
 Subject: [PATCH 14/30] prctl: Introduce PR_{SET,GET}_MEM_MODEL
@@ -43,7 +43,7 @@ Reviewed-by: Neal Gompa <neal@gompa.dev>
 
 diff --git a/include/linux/memory_ordering_model.h b/include/linux/memory_ordering_model.h
 new file mode 100644
-index 000000000000..267a12ca6630
+index 0000000..267a12c
 --- /dev/null
 +++ b/include/linux/memory_ordering_model.h
 @@ -0,0 +1,11 @@
@@ -59,7 +59,7 @@ index 000000000000..267a12ca6630
 +
 +#endif
 diff --git a/include/uapi/linux/prctl.h b/include/uapi/linux/prctl.h
-index 35791791a879..36c278683cd6 100644
+index 3579179..36c2786 100644
 --- a/include/uapi/linux/prctl.h
 +++ b/include/uapi/linux/prctl.h
 @@ -328,4 +328,9 @@ struct prctl_mm_map {
@@ -73,7 +73,7 @@ index 35791791a879..36c278683cd6 100644
 +
  #endif /* _LINUX_PRCTL_H */
 diff --git a/kernel/sys.c b/kernel/sys.c
-index 8283e35c9eeb..b14846a80169 100644
+index 8283e35..b14846a 100644
 --- a/kernel/sys.c
 +++ b/kernel/sys.c
 @@ -45,6 +45,7 @@
