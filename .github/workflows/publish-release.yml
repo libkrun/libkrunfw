@@ -21,7 +21,7 @@ jobs:
           make
           make PREFIX=tmp install
           cd tmp
-          tar czf ../libkrunfw-x86_64.tgz lib64
+          tar czf ../libkrunfw-x86_64.tgz lib
           cd ..
           rm -fr tmp
           gh release upload ${{github.event.release.tag_name}} libkrunfw-x86_64.tgz
@@ -49,7 +49,7 @@ jobs:
           tar czf libkrunfw-prebuilt-aarch64.tgz libkrunfw
           rm -fr libkrunfw
           cd tmp
-          tar czf ../libkrunfw-aarch64.tgz lib64
+          tar czf ../libkrunfw-aarch64.tgz lib
           cd ..
           rm -fr tmp
           gh release upload ${{github.event.release.tag_name}} libkrunfw-prebuilt-aarch64.tgz
@@ -74,7 +74,7 @@ jobs:
           make ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu-
           make ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- PREFIX=tmp install
           cd tmp
-          tar czf ../libkrunfw-riscv64.tgz lib64
+          tar czf ../libkrunfw-riscv64.tgz lib
           cd ..
           rm -fr tmp
           gh release upload ${{github.event.release.tag_name}} libkrunfw-riscv64.tgz
