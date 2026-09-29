@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Matej Hrica <mhrica@redhat.com>
+Subject: [PATCH] drm/vblank: Use Linux 6.12 hrtimer initialization API
+
+Linux 6.12 predates hrtimer_setup(). Initialize timer and callback separately.
+
+--- a/drivers/gpu/drm/drm_vblank.c
++++ b/drivers/gpu/drm/drm_vblank.c
+@@ -2233,8 +2233,8 @@ int drm_crtc_vblank_start_timer(struct drm_crtc *crtc)
+ 		 */
+ 		vtimer->crtc = crtc;
+ 		spin_lock_init(&vtimer->interval_lock);
+-		hrtimer_setup(&vtimer->timer, drm_vblank_timer_function,
+-			      CLOCK_MONOTONIC, HRTIMER_MODE_REL);
++		hrtimer_init(&vtimer->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
++		vtimer->timer.function = drm_vblank_timer_function;
+ 	} else {
+ 		/*
+ 		 * Timer should not be active. If it is, wait for the
