@@ -91,14 +91,15 @@ index 5139705089f200..781129f78b06b8 100644
  ===========================
  
 diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
-index 4dafbdc8f86acc..5ba4ffdb80551d 100644
+index 4a899e75a25cf..c5ee3e0f1fc6 100644
 --- a/drivers/gpu/drm/Makefile
 +++ b/drivers/gpu/drm/Makefile
-@@ -145,2 +145,3 @@ drm_kms_helper-y := \
+@@ -145,3 +145,4 @@ drm_kms_helper-y := \
  	drm_self_refresh_helper.o \
 -	drm_simple_kms_helper.o
 +	drm_simple_kms_helper.o \
 +	drm_vblank_helper.o
+ drm_kms_helper-$(CONFIG_DRM_CLIENT_SETUP) += \
 diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
 index 46f59883183d97..61e211fd3c9c8a 100644
 --- a/drivers/gpu/drm/drm_vblank.c
