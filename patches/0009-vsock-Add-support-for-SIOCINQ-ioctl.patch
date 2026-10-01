@@ -1,4 +1,4 @@
-From 2fc5e66a1f39c626768559ea17769cfac5287b7f Mon Sep 17 00:00:00 2001
+From 2303d7f8a82319de6fb0d061a3316f51d20cabc0 Mon Sep 17 00:00:00 2001
 From: Xuewei Niu <niuxuewei.nxw@antgroup.com>
 Date: Tue, 8 Jul 2025 14:36:12 +0800
 Subject: [PATCH 09/38] vsock: Add support for SIOCINQ ioctl
@@ -18,7 +18,7 @@ Signed-off-by: Sergio Lopez <slp@redhat.com>
  1 file changed, 22 insertions(+)
 
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 5242795aad35..522ac6a3c830 100644
+index 4dfc16b4acb6..907b99101f29 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
 @@ -1560,6 +1560,28 @@ static int vsock_do_ioctl(struct socket *sock, unsigned int cmd,

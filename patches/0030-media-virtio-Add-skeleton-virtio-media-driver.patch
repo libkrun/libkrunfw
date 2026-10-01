@@ -1,4 +1,4 @@
-From 3f54ab38a866987b9dd9d18ede6301c4db7baa36 Mon Sep 17 00:00:00 2001
+From 13396bcb95d477c38421a6d776f7e349965085cc Mon Sep 17 00:00:00 2001
 From: Brian Daniels <briandaniels@google.com>
 Date: Tue, 8 Sep 2026 10:40:13 +0200
 Subject: [PATCH 30/38] media: virtio: Add skeleton virtio-media driver
@@ -35,10 +35,10 @@ Signed-off-by: Brian Daniels <briandaniels@google.com>
  create mode 100644 include/uapi/linux/virtio_media.h
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 259b63cee143..1042ebc5f336 100644
+index 3f2938ab0406..bc7aeccd2649 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -24498,6 +24498,7 @@ F:	Documentation/devicetree/bindings/virtio/
+@@ -24499,6 +24499,7 @@ F:	Documentation/devicetree/bindings/virtio/
  F:	Documentation/driver-api/virtio/
  F:	drivers/block/virtio_blk.c
  F:	drivers/crypto/virtio/
@@ -46,7 +46,7 @@ index 259b63cee143..1042ebc5f336 100644
  F:	drivers/net/virtio_net.c
  F:	drivers/vdpa/
  F:	drivers/virtio/
-@@ -24610,6 +24611,13 @@ S:	Maintained
+@@ -24611,6 +24612,13 @@ S:	Maintained
  F:	drivers/iommu/virtio-iommu.c
  F:	include/uapi/linux/virtio_iommu.h
  

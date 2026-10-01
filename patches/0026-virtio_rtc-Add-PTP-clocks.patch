@@ -1,4 +1,4 @@
-From a1fc399e1d33181b682843c24e23e00e98506d95 Mon Sep 17 00:00:00 2001
+From 90b68d5666a38dd6b08d5a88e5f2056e5397f350 Mon Sep 17 00:00:00 2001
 From: Peter Hilber <quic_philber@quicinc.com>
 Date: Fri, 9 May 2025 18:07:23 +0200
 Subject: [PATCH 26/38] virtio_rtc: Add PTP clocks

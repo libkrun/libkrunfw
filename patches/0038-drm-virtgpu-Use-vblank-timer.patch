@@ -1,4 +1,4 @@
-From b22c25a9d1e25cce7d127bf81cf6cf78201c9ab5 Mon Sep 17 00:00:00 2001
+From 62fcf863ffcb53047f225586f54be2abafd96cf9 Mon Sep 17 00:00:00 2001
 From: Thomas Zimmermann <tzimmermann@suse.de>
 Date: Wed, 8 Oct 2025 15:06:51 +0200
 Subject: [PATCH 38/38] drm/virtgpu: Use vblank timer
@@ -9,7 +9,7 @@ Backport of upstream commit a036f5fceedb9fbd715565fef7b824a121503de7.
  1 file changed, 27 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/virtio/virtgpu_display.c b/drivers/gpu/drm/virtio/virtgpu_display.c
-index 64baf2f22d9f..db773faa021d 100644
+index 9d4fcf2b6e87..fefb8089cbec 100644
 --- a/drivers/gpu/drm/virtio/virtgpu_display.c
 +++ b/drivers/gpu/drm/virtio/virtgpu_display.c
 @@ -32,6 +32,8 @@

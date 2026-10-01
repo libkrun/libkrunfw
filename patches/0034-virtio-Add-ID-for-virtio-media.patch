@@ -1,4 +1,4 @@
-From 08237059687bf415b6ca10ef0a3bba9ea7b69df8 Mon Sep 17 00:00:00 2001
+From 5762332f76e588108fb31172eafd71ed845ac24d Mon Sep 17 00:00:00 2001
 From: Albert Esteve <aesteve@redhat.com>
 Date: Tue, 10 Mar 2026 09:40:46 +0100
 Subject: [PATCH 34/38] virtio: Add ID for virtio media

@@ -1,4 +1,4 @@
-From e162b2f85d770158afb1d49cd5bca933dd17581b Mon Sep 17 00:00:00 2001
+From 57b14a1cc119a7233967699e466954b0ab628ba9 Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Thu, 20 Oct 2022 10:23:16 +0200
 Subject: [PATCH 2/4] x86/sev: write AP reset vector

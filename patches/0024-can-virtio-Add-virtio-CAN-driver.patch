@@ -1,4 +1,4 @@
-From 82c33f501cc6ad349298e3d2de6a8317e0e9cc89 Mon Sep 17 00:00:00 2001
+From 0dad018e1a270b39847222b4c1cca7ee858871d1 Mon Sep 17 00:00:00 2001
 From: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
 Date: Fri, 8 May 2026 14:23:37 +0200
 Subject: [PATCH 24/38] can: virtio: Add virtio CAN driver
@@ -36,10 +36,10 @@ Signed-off-by: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
  create mode 100644 include/uapi/linux/virtio_can.h
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index d5d394a5ad6b..e53aa8538ce3 100644
+index 1cf22c9536b1..6de3461fc4e0 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -24469,6 +24469,15 @@ F:	drivers/scsi/virtio_scsi.c
+@@ -24470,6 +24470,15 @@ F:	drivers/scsi/virtio_scsi.c
  F:	include/uapi/linux/virtio_blk.h
  F:	include/uapi/linux/virtio_scsi.h
  

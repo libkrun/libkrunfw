@@ -1,4 +1,4 @@
-From cb66798255b582838b5dd5d2dee04f039cf7e281 Mon Sep 17 00:00:00 2001
+From 5ba1cba96b3ffaf41d29ddf26427b8a5caa72b26 Mon Sep 17 00:00:00 2001
 From: Bobby Eshleman <bobby.eshleman () bytedance ! com>
 Date: Sat, 10 Jun 2023 00:58:30 +0000
 Subject: [PATCH 05/38] vsock: support multi-transport datagrams
@@ -82,7 +82,7 @@ index 06d5b15642ae..6c8791d3bc70 100644
  int virtio_transport_dgram_get_cid(struct sk_buff *skb, unsigned int *cid);
  int virtio_transport_dgram_get_port(struct sk_buff *skb, unsigned int *port);
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index fa5821c97845..9ea29661b5aa 100644
+index 568912943df1..93e79c0f27e0 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
 @@ -448,6 +448,18 @@ vsock_connectible_lookup_transport(unsigned int cid, __u8 flags)
@@ -238,7 +238,7 @@ index fa5821c97845..9ea29661b5aa 100644
  
  	/* sock map disallows redirection of non-TCP sockets with sk_state !=
 diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
-index 5564c0e11d74..238b18544e51 100644
+index cd7b193e8919..6e2f7038e846 100644
 --- a/net/vmw_vsock/hyperv_transport.c
 +++ b/net/vmw_vsock/hyperv_transport.c
 @@ -552,11 +552,6 @@ static void hvs_destruct(struct vsock_sock *vsk)

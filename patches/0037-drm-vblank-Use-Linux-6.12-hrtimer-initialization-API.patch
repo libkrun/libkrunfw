@@ -1,4 +1,4 @@
-From 79635f95f77cb425d0ffc950a912b9aa68544fc6 Mon Sep 17 00:00:00 2001
+From 36a7d7cb606ea5990097bcb09121aa972b67dc6f Mon Sep 17 00:00:00 2001
 From: Matej Hrica <mhrica@redhat.com>
 Date: Thu, 1 Oct 2026 10:50:39 +0200
 Subject: [PATCH 37/38] drm/vblank: Use Linux 6.12 hrtimer initialization API

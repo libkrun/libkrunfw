@@ -1,4 +1,4 @@
-From 70e18687e023f17ecc999ee9ccf4734575f38413 Mon Sep 17 00:00:00 2001
+From 268522d6c000dace0afb2a15625fb8a7e0aa15b7 Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Thu, 19 May 2022 22:42:01 +0200
 Subject: [PATCH 12/38] tsi: allow hijacking sockets (tsi_hijack)

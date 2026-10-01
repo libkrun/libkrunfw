@@ -1,4 +1,4 @@
-From 049d63ec8ad84a4bd471b86ffa819fd6d393df7e Mon Sep 17 00:00:00 2001
+From 7c4d647943cf425d8f1ad9be4e110f0554a4a29e Mon Sep 17 00:00:00 2001
 From: Peter Hilber <quic_philber@quicinc.com>
 Date: Fri, 9 May 2025 18:07:25 +0200
 Subject: [PATCH 28/38] virtio_rtc: Add RTC class driver

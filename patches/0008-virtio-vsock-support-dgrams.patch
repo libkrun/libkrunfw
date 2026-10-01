@@ -1,4 +1,4 @@
-From aa8d05eb5d994be74195a42df0fde477e0216124 Mon Sep 17 00:00:00 2001
+From f6b70f6797524ab6ffc6ea78765e606cce32db1d Mon Sep 17 00:00:00 2001
 From: Bobby Eshleman <bobby.eshleman () bytedance ! com>
 Date: Sat, 10 Jun 2023 00:58:33 +0000
 Subject: [PATCH 08/38] virtio/vsock: support dgrams
@@ -157,7 +157,7 @@ index 9c25f267bbc0..27b4b2b8bf13 100644
  
  enum virtio_vsock_op {
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index d33474b555a0..5242795aad35 100644
+index b4af5ed65b0b..4dfc16b4acb6 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
 @@ -118,6 +118,7 @@ static int __vsock_bind(struct sock *sk, struct sockaddr_vm *addr);

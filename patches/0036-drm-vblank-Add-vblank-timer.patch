@@ -1,4 +1,4 @@
-From 27e25f85d3cf61f7a45c207ce4d092a7590bae5c Mon Sep 17 00:00:00 2001
+From 8c1157adcdd65a01f01a436e3da22cb79d8916e1 Mon Sep 17 00:00:00 2001
 From: Thomas Zimmermann <tzimmermann@suse.de>
 Date: Tue, 16 Sep 2025 10:36:19 +0200
 Subject: [PATCH 36/38] drm/vblank: Add vblank timer

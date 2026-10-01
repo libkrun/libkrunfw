@@ -1,4 +1,4 @@
-From b8cb81b245541d10ad4e8071ef98110d1614e70e Mon Sep 17 00:00:00 2001
+From a2998df8e160a13e960226bf4dffe9b49c0c9ac0 Mon Sep 17 00:00:00 2001
 From: Peter Hilber <quic_philber@quicinc.com>
 Date: Fri, 9 May 2025 18:07:24 +0200
 Subject: [PATCH 27/38] virtio_rtc: Add Arm Generic Timer cross-timestamping

@@ -1,4 +1,4 @@
-From 73e82d5dfa2dce38c8e73950aaf09f95459f6cae Mon Sep 17 00:00:00 2001
+From 75d16d8627f8f35701d72c3c4244e059071c8d7e Mon Sep 17 00:00:00 2001
 From: Dorinda Bassey <dbassey@redhat.com>
 Date: Wed, 29 Apr 2026 11:35:00 +0200
 Subject: [PATCH 29/38] virtio_rtc: Fix compatibility for kernel 6.12
