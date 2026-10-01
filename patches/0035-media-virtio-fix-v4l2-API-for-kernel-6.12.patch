@@ -1,7 +1,7 @@
-From 268c45840115b4a8e6c771608c9d89603d00073a Mon Sep 17 00:00:00 2001
+From 9a09f34aa1f14535b423ae07ace8fbb77c44a369 Mon Sep 17 00:00:00 2001
 From: Dorinda Bassey <dbassey@redhat.com>
 Date: Tue, 8 Sep 2026 10:51:22 +0200
-Subject: [PATCH 36/36] media: virtio: fix v4l2 API for kernel 6.12
+Subject: [PATCH 35/38] media: virtio: fix v4l2 API for kernel 6.12
 
 Kernel 6.12 lacks two helpers added in later kernels:
 

@@ -1,7 +1,7 @@
-From efe3e5fc34c3af1fec4e09a27d67caf6851fd1dd Mon Sep 17 00:00:00 2001
+From 36ab36c64faafa209a3d40a4eb43beb173f13a45 Mon Sep 17 00:00:00 2001
 From: Peter Hilber <quic_philber@quicinc.com>
 Date: Fri, 9 May 2025 18:07:22 +0200
-Subject: [PATCH 26/36] virtio_rtc: Add module and driver core
+Subject: [PATCH 25/38] virtio_rtc: Add module and driver core
 
 Add the virtio_rtc module and driver core. The virtio_rtc module implements
 a driver compatible with the proposed Virtio RTC device specification.

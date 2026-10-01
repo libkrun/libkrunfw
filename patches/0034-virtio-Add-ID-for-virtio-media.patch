@@ -1,7 +1,7 @@
-From c5e1760189b5bd7818e5a62d978de6203e83fcdc Mon Sep 17 00:00:00 2001
+From 08237059687bf415b6ca10ef0a3bba9ea7b69df8 Mon Sep 17 00:00:00 2001
 From: Albert Esteve <aesteve@redhat.com>
 Date: Tue, 10 Mar 2026 09:40:46 +0100
-Subject: [PATCH 35/36] virtio: Add ID for virtio media
+Subject: [PATCH 34/38] virtio: Add ID for virtio media
 
 Add VIRTIO_ID_MEDIA definition for virtio-media.
 

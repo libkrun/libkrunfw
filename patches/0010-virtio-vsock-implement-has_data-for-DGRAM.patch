@@ -1,7 +1,7 @@
 From b2443370182382eee9e7aa1a11d472921182374d Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Thu, 28 May 2026 11:43:46 +0200
-Subject: [PATCH 10/36] virtio/vsock: implement has_data for DGRAM
+Subject: [PATCH 10/38] virtio/vsock: implement has_data for DGRAM
 
 Signed-off-by: Sergio Lopez <slp@redhat.com>
 ---

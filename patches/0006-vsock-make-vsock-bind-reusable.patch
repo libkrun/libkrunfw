@@ -1,7 +1,7 @@
 From 909eb28767726557a02619ecc50c9f207df55d5a Mon Sep 17 00:00:00 2001
 From: Bobby Eshleman <bobby.eshleman () bytedance ! com>
 Date: Sat, 10 Jun 2023 00:58:31 +0000
-Subject: [PATCH 06/36] vsock: make vsock bind reusable
+Subject: [PATCH 06/38] vsock: make vsock bind reusable
 
 This commit makes the bind table management functions in vsock usable
 for different bind tables. For use by datagrams in a future patch.

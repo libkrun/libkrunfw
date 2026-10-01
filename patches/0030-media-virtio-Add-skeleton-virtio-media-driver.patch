@@ -1,7 +1,7 @@
-From 69ed5b8004028f1e588d35369f2e6148f90d4e7f Mon Sep 17 00:00:00 2001
+From 3f54ab38a866987b9dd9d18ede6301c4db7baa36 Mon Sep 17 00:00:00 2001
 From: Brian Daniels <briandaniels@google.com>
 Date: Tue, 8 Sep 2026 10:40:13 +0200
-Subject: [PATCH 31/36] media: virtio: Add skeleton virtio-media driver
+Subject: [PATCH 30/38] media: virtio: Add skeleton virtio-media driver
 
 From: Alexandre Courbot <gnurou@gmail.com>
 

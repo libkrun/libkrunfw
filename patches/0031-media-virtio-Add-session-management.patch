@@ -1,7 +1,7 @@
-From 9be49fb32b4aeb6e45f214f6443b9cf083d4910b Mon Sep 17 00:00:00 2001
+From 0f24427e944d9bbab964be35318cd530cd12c1b0 Mon Sep 17 00:00:00 2001
 From: Brian Daniels <briandaniels@google.com>
 Date: Tue, 8 Sep 2026 10:44:39 +0200
-Subject: [PATCH 32/36] media: virtio: Add session management
+Subject: [PATCH 31/38] media: virtio: Add session management
 
 From: Alexandre Courbot <gnurou@gmail.com>
 

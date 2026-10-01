@@ -1,7 +1,7 @@
 From 2fc5e66a1f39c626768559ea17769cfac5287b7f Mon Sep 17 00:00:00 2001
 From: Xuewei Niu <niuxuewei.nxw@antgroup.com>
 Date: Tue, 8 Jul 2025 14:36:12 +0800
-Subject: [PATCH 09/36] vsock: Add support for SIOCINQ ioctl
+Subject: [PATCH 09/38] vsock: Add support for SIOCINQ ioctl
 
 Add support for SIOCINQ ioctl, indicating the length of bytes unread in the
 socket. The value is obtained from `vsock_stream_has_data()`.

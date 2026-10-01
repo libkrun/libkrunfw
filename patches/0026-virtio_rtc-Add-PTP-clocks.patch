@@ -1,7 +1,7 @@
-From 1c5498cbd13e00dfecc58899e617324ea1602752 Mon Sep 17 00:00:00 2001
+From a1fc399e1d33181b682843c24e23e00e98506d95 Mon Sep 17 00:00:00 2001
 From: Peter Hilber <quic_philber@quicinc.com>
 Date: Fri, 9 May 2025 18:07:23 +0200
-Subject: [PATCH 27/36] virtio_rtc: Add PTP clocks
+Subject: [PATCH 26/38] virtio_rtc: Add PTP clocks
 
 Expose the virtio_rtc clocks as PTP clocks to userspace, similar to
 ptp_kvm. virtio_rtc can expose multiple clocks, e.g. a UTC clock and a

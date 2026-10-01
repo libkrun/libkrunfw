@@ -1,7 +1,7 @@
-From 82b5649718b6a1450e68beb1a9e2ca653c90ab5c Mon Sep 17 00:00:00 2001
+From e840f6ff0cf0be933dbebaf1b2b902bb9175b0f4 Mon Sep 17 00:00:00 2001
 From: Brian Daniels <briandaniels@google.com>
 Date: Tue, 8 Sep 2026 10:48:24 +0200
-Subject: [PATCH 33/36] media: virtio: Add scatterlist builder
+Subject: [PATCH 32/38] media: virtio: Add scatterlist builder
 
 From: Alexandre Courbot <gnurou@gmail.com>
 

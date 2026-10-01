@@ -1,7 +1,7 @@
-From 9528ae2b9840a9a27194b8c94484a4b37a656b70 Mon Sep 17 00:00:00 2001
+From 06f12095992e7293073e364c8769e9f040f2a29c Mon Sep 17 00:00:00 2001
 From: Sasha Finkelstein <fnkl.kernel@gmail.com>
 Date: Fri, 17 Jan 2025 12:34:23 +0100
-Subject: [PATCH 22/36] virtgpu: gem partial map
+Subject: [PATCH 21/38] virtgpu: gem partial map
 
 Those are useful to implement coherent cross-vm mmap.
 
