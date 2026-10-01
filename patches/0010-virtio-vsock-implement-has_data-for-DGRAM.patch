@@ -1,7 +1,7 @@
-From b2443370182382eee9e7aa1a11d472921182374d Mon Sep 17 00:00:00 2001
+From ae076c6759008f96dec6ccfa2d4a13f55f2de2e0 Mon Sep 17 00:00:00 2001
 From: Sergio Lopez <slp@redhat.com>
 Date: Thu, 28 May 2026 11:43:46 +0200
-Subject: [PATCH 10/36] virtio/vsock: implement has_data for DGRAM
+Subject: [PATCH 10/38] virtio/vsock: implement has_data for DGRAM
 
 Signed-off-by: Sergio Lopez <slp@redhat.com>
 ---
@@ -46,7 +46,7 @@ index 5f93bb290a83..45469aa8cf60 100644
  	/* STREAM. */
  	/* TODO: stream_bind() */
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 522ac6a3c830..3f802cf57609 100644
+index 907b99101f29..94befed82ff1 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
 @@ -1007,6 +1007,15 @@ s64 vsock_stream_has_data(struct vsock_sock *vsk)

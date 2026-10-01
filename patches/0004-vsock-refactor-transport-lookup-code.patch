@@ -1,7 +1,7 @@
-From 87c404066aa6497430d824f5fa2d114d0e768c68 Mon Sep 17 00:00:00 2001
+From da005e088a069d3a6b57b6e5c40841123dc9b470 Mon Sep 17 00:00:00 2001
 From: Bobby Eshleman <bobby.eshleman () bytedance ! com>
 Date: Sat, 10 Jun 2023 00:58:29 +0000
-Subject: [PATCH 04/36] vsock: refactor transport lookup code
+Subject: [PATCH 04/38] vsock: refactor transport lookup code
 
 Introduce new reusable function vsock_connectible_lookup_transport()
 that performs the transport lookup logic.
@@ -14,7 +14,7 @@ Signed-off-by: Bobby Eshleman <bobby.eshleman@bytedance.com>
  1 file changed, 18 insertions(+), 7 deletions(-)
 
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index e75651c04f5d..fa5821c97845 100644
+index 2b710d5ccd5f..568912943df1 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
 @@ -432,6 +432,22 @@ static void vsock_deassign_transport(struct vsock_sock *vsk)

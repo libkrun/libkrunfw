@@ -1,7 +1,7 @@
-From 38ef95306de88ccc689e06500088d18d83fbbd6d Mon Sep 17 00:00:00 2001
+From 7daf0512ef4f77a24b87a07ad49cc1ef4021e567 Mon Sep 17 00:00:00 2001
 From: Brian Daniels <briandaniels@google.com>
 Date: Tue, 8 Sep 2026 10:49:26 +0200
-Subject: [PATCH 34/36] media: virtio: Add ioctl operations and driver logic
+Subject: [PATCH 33/38] media: virtio: Add ioctl operations and driver logic
 
 From: Alexandre Courbot <gnurou@gmail.com>
 
