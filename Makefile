@@ -1,13 +1,12 @@
-KERNEL_VERSION = linux-6.12.109
-KERNEL_REMOTE = https://cdn.kernel.org/pub/linux/kernel/v6.x/$(KERNEL_VERSION).tar.xz
-KERNEL_TARBALL = tarballs/$(KERNEL_VERSION).tar.xz
-KERNEL_SOURCES = $(KERNEL_VERSION)
-KERNEL_PATCHES = $(shell find patches/ -name "0*.patch" | sort)
-KERNEL_C_BUNDLE = kernel.c
-
 ABI_VERSION = 5
-FULL_VERSION = 5.6.2
-TIMESTAMP = "Mon Sep 21 20:29:27 CEST 2026"
+FULL_VERSION = 5.6.3
+TIMESTAMP = "Wed Nov  4 09:38:44 AM CET 2026"
+
+KERNEL_VERSION = 6.12.115
+KERNEL_REMOTE = https://github.com/libkrun/linux/archive/refs/tags/v$(FULL_VERSION)-$(KERNEL_VERSION).tar.gz
+KERNEL_TARBALL = tarballs/v$(FULL_VERSION)-$(KERNEL_VERSION).tar.gz
+KERNEL_SOURCES = linux-$(FULL_VERSION)-$(KERNEL_VERSION)
+KERNEL_C_BUNDLE = kernel.c
 
 KERNEL_FLAGS = KBUILD_BUILD_TIMESTAMP=$(TIMESTAMP)
 KERNEL_FLAGS += KBUILD_BUILD_USER=root
@@ -28,11 +27,9 @@ endif
 
 ifeq ($(SEV),1)
     VARIANT = -sev
-    KERNEL_PATCHES += $(shell find patches-tee/ -name "0*.patch" | sort)
 endif
 ifeq ($(TDX),1)
     VARIANT = -tdx
-    KERNEL_PATCHES += $(shell find patches-tee/ -name "0*.patch" | sort)
 endif
 
 HOSTARCH = $(shell uname -m)
@@ -137,11 +134,10 @@ all: $(KRUNFW_BINARY_$(OS))
 
 $(KERNEL_TARBALL):
 	@mkdir -p tarballs
-	curl $(KERNEL_REMOTE) -o $(KERNEL_TARBALL)
+	curl -L $(KERNEL_REMOTE) -o $(KERNEL_TARBALL)
 
 $(KERNEL_SOURCES): $(KERNEL_TARBALL)
 	tar xf $(KERNEL_TARBALL)
-	for patch in $(KERNEL_PATCHES); do patch -p1 -d $(KERNEL_SOURCES) < "$$patch"; done
 	cp config-libkrunfw$(VARIANT)_$(GUESTARCH) $(KERNEL_SOURCES)/.config
 ifeq ($(OS),Darwin)
 ifeq ($(MACOS_BUILDER),native)

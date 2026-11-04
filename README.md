@@ -4,6 +4,23 @@
 
 By having the kernel bundled in a dynamic library, ```libkrun``` can leave to the linker the work of mapping the sections into the process, and then directly inject those mappings into the guest without any kind of additional work nor processing.
 
+## Source code
+
+We've moved from carrying downstream patches in a directory, to using a series of branches of the Linux kernel and tags in a fork on GitHub. This makes accepting and tracking changes to the downstream features much easier. If you're interested in suggesting a change, please consider creating a PR against the corresponding branch.
+
+### Stable branches
+
+These branches won't be force pushed, always preserving the commit history.
+
+- [libkrunfw-linux-6.12.x](https://github.com/libkrun/linux/tree/libkrunfw-linux-6.12.x): Main branch used in libkrunfw.
+
+### Development branches
+
+These are branches for in-development features and force-pushes are allowed on them. Commit history may be change at any point.
+
+- [wip/virtio-fs-adversarial-tests](https://github.com/libkrun/linux/tree/wip/virtio-fs-adversarial-tests): Infrastructure for building adversarial tests for virtio-fs.
+- [wip/virtio-fs-sync](https://github.com/libkrun/linux/tree/wip/virtio-fs-sync): Experimental support for synchronous queues for virtio-fs.
+
 ## Building
 
 ### Linux (generic variant)
