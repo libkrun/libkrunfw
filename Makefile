@@ -1,11 +1,11 @@
-ABI_VERSION = 5
-FULL_VERSION = 5.6.3
+ABI_VERSION = 6
+FULL_VERSION = 6.0.0
 TIMESTAMP = "Wed Nov  4 09:38:44 AM CET 2026"
 
-KERNEL_VERSION = 6.12.115
-KERNEL_REMOTE = https://github.com/libkrun/linux/archive/refs/tags/v$(FULL_VERSION)-$(KERNEL_VERSION).tar.gz
-KERNEL_TARBALL = tarballs/v$(FULL_VERSION)-$(KERNEL_VERSION).tar.gz
-KERNEL_SOURCES = linux-$(FULL_VERSION)-$(KERNEL_VERSION)
+KERNEL_VERSION = 7.3.1
+KERNEL_REMOTE = https://github.com/libkrun/linux/archive/refs/heads/wip/tsiv4-7.3.tar.gz
+KERNEL_TARBALL = tarballs/tsiv4-7.3.tar.gz
+KERNEL_SOURCES = linux-wip-tsiv4-7.3
 KERNEL_C_BUNDLE = kernel.c
 
 KERNEL_FLAGS = KBUILD_BUILD_TIMESTAMP=$(TIMESTAMP)

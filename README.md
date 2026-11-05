@@ -4,6 +4,29 @@
 
 By having the kernel bundled in a dynamic library, ```libkrun``` can leave to the linker the work of mapping the sections into the process, and then directly inject those mappings into the guest without any kind of additional work nor processing.
 
+## ABI 6 development
+
+This branch prepares libkrunfw 6.0.0 with Linux 7.3.1 and TSIv4 for libkrun 2.0.
+The library SONAME/exported ABI is 6. Linux/macOS library names include that ABI;
+Windows retains `libkrunfw.dll`. The exported `krunfw_get_version()` returns 6 on
+all platforms. The paired libkrun loader rejects other values before reading
+kernel data; renaming an older library does not make it compatible.
+
+The default source archive uses the matching Linux release tag
+`v6.0.0-7.3.1`. Publishing that tag remains a release step. For local development,
+create the expected archive from the paired Linux branch before running `make`:
+
+```sh
+mkdir -p tarballs
+git -C ../linux archive --format=tar --prefix=linux-6.0.0-7.3.1/ wip/tsiv4-7.3 |
+    gzip > tarballs/v6.0.0-7.3.1.tar.gz
+make
+```
+
+The normal build copies the variant's configuration and runs `olddefconfig`
+against the selected kernel. Linux 7.3 is the current development target; a
+forward rebase to 7.4 remains possible if that becomes the LTS baseline.
+
 ## Source code
 
 We've moved from carrying downstream patches in a directory, to using a series of branches of the Linux kernel and tags in a fork on GitHub. This makes accepting and tracking changes to the downstream features much easier. If you're interested in suggesting a change, please consider creating a PR against the corresponding branch.
@@ -12,7 +35,7 @@ We've moved from carrying downstream patches in a directory, to using a series o
 
 These branches won't be force pushed, always preserving the commit history.
 
-- [libkrunfw-linux-6.12.x](https://github.com/libkrun/linux/tree/libkrunfw-linux-6.12.x): Main branch used in libkrunfw.
+- [libkrunfw-linux-6.12.x](https://github.com/libkrun/linux/tree/libkrunfw-linux-6.12.x): Kernel branch for libkrunfw 5.x.
 
 ### Development branches
 
