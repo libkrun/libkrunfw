@@ -1,6 +1,6 @@
 ABI_VERSION = 5
-FULL_VERSION = 5.6.3
-TIMESTAMP = "Wed Nov  4 09:38:44 AM CET 2026"
+FULL_VERSION = 5.6.4
+TIMESTAMP = "Wed Nov 11 04:20:12 PM CET 2026"
 
 KERNEL_VERSION = 6.12.115
 KERNEL_REMOTE = https://github.com/libkrun/linux/archive/refs/tags/v$(FULL_VERSION)-$(KERNEL_VERSION).tar.gz
