@@ -1,0 +1,34 @@
+From 3f557e4f344341a324e130e8b1d7c1275a7540bc Mon Sep 17 00:00:00 2001
+From: Dorinda Bassey <dbassey@redhat.com>
+Date: Wed, 30 Sep 2026 14:28:42 +0200
+Subject: [PATCH] drm/virtio: add ARGB8888 support for primary planes
+
+Add DRM_FORMAT_HOST_ARGB8888 to the list of supported formats for
+virtio-gpu primary planes. Without this, glmark2-drm fails at
+startup because it selects ARGB visual configs by default, which
+don't match the XRGB-only plane capabilities. This causes
+drmModeSetCrtc to fail with EINVAL.
+
+The virtio_gpu_translate_format() function already handles
+ARGB8888 translation to VIRTIO_GPU_FORMAT_B8G8R8A8_UNORM,
+so this just exposes the existing capability to userspace.
+
+Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
+---
+ drivers/gpu/drm/virtio/virtgpu_plane.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/gpu/drm/virtio/virtgpu_plane.c b/drivers/gpu/drm/virtio/virtgpu_plane.c
+index b422eba42a5f..5f0bc1b1931b 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_plane.c
++++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
+@@ -37,6 +37,7 @@
+
+ static const uint32_t virtio_gpu_formats[] = {
+ 	DRM_FORMAT_HOST_XRGB8888,
++	DRM_FORMAT_HOST_ARGB8888,
+ };
+
+ static const uint32_t virtio_gpu_cursor_formats[] = {
+--
+2.55.0
